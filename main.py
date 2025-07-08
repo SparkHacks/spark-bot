@@ -1,13 +1,33 @@
 import discord
 from discord.ext import commands
 
-from config import DISCORD_TOKEN
+import logging
+import os
+from dotenv import load_dotenv
 
-bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s | %(levelname)-8s | %(name)s: %(message)s",
+    handlers=[logging.StreamHandler()]
+)
 
-for command in ["admin", "hacker"]:
-    bot.load_extension(f"cogs.commands.{command}")
-    
-bot.load_extension("cogs.events")
+load_dotenv()
+DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 
-bot.run(DISCORD_TOKEN)
+COGS = [
+    "cogs.commands.admin",
+    "cogs.commands.hacker",
+    "cogs.events"
+]
+
+if __name__ == "__main__":
+    if not DISCORD_TOKEN:
+        logging.critical("DISCORD_TOKEN not found in environment.")
+        exit(1)
+
+    bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
+
+    for cog in COGS:
+        bot.load_extension(cog)
+
+    bot.run(DISCORD_TOKEN)

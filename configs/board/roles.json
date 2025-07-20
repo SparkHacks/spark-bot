@@ -1,0 +1,10 @@
+[
+    { "name": "Director",       "color": "#FFD700" },  
+    { "name": "Lead",           "color": "#C084FC" },  
+    { "name": "Communications", "color": "#FF4C4C" },  
+    { "name": "Design",         "color": "#00CFFF" }, 
+    { "name": "Experience",     "color": "#FF6EC7" },  
+    { "name": "Logistics",      "color": "#FF6700" },  
+    { "name": "Media",          "color": "#4DA6FF" },  
+    { "name": "Webdev",         "color": "#B76CFF" }  
+]

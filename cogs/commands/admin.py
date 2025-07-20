@@ -4,19 +4,10 @@ from discord.ext import commands
 import json
 import logging
 from dacite import from_dict
-from dataclasses import dataclass
+
+from utils.dataclasses import Category, Role
 
 logger = logging.getLogger(__name__)
-
-@dataclass
-class Channel:
-    name: str
-    type: str
-
-@dataclass
-class Category:
-    name: str
-    channels: list[Channel]
 
 class Admin(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -32,21 +23,25 @@ class Admin(commands.Cog):
         guild: discord.Guild = ctx.guild
 
         categories = [from_dict(Category, d) for d in self._load_data("configs/board/channels.json")]
+        roles = [from_dict(Role, d) for d in self._load_data("configs/board/roles.json")]
 
         welcome_channel = await guild.create_text_channel("🎉welcome👋")
         await guild.edit(system_channel=welcome_channel)
 
         for category in categories:
-            _category = await guild.create_category(name=category.name)
+            category.channel = await guild.create_category(name=category.name)
 
             for channel in category.channels:
                 match channel.type:
                     case "text":
-                        await guild.create_text_channel(name=channel.name, category=_category)
+                        await guild.create_text_channel(name=channel.name, category=category.channel)
                     case "voice":
-                        await guild.create_voice_channel(name=channel.name, category=_category)
+                        await guild.create_voice_channel(name=channel.name, category=category.channel)
                     case _:
                         logger.error(f"Unknown channel type: {channel.type}.")
+
+        for role in roles:
+            await guild.create_role(name=role.name, color=discord.Color(int(role.color.lstrip("#"), 16)))
 
     @commands.command(name="wipe")
     @commands.has_permissions(administrator=True)

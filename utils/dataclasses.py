@@ -9,10 +9,16 @@ class Channel:
 @dataclass
 class Category:
     name: str
-    channel: discord.CategoryChannel | None
     channels: list[Channel]
+    channel: discord.CategoryChannel = None
 
 @dataclass
 class Role:
     name: str
-    color: str
+    permissions: discord.Permissions = None
+    color: discord.Color = discord.Color.random()
+
+@dataclass
+class Team:
+    name: str
+    members: list[str]

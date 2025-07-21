@@ -1,11 +1,10 @@
 import discord
 from discord.ext import commands
 
-import json
 import logging
-from dacite import from_dict
 
-from utils.dataclasses import Category, Role
+from configs.board.channels import CHANNELS, CATEGORIES
+from configs.board.roles import ROLES
 
 logger = logging.getLogger(__name__)
 
@@ -13,22 +12,18 @@ class Admin(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    def _load_data(self, filename):
-        with open(filename, "r") as f_data:
-            return json.load(f_data)
-
     @commands.command(name="setup_board")
     @commands.has_permissions(administrator=True)
     async def setup_board(self, ctx: commands.Context):
         guild: discord.Guild = ctx.guild
 
-        categories = [from_dict(Category, d) for d in self._load_data("configs/board/channels.json")]
-        roles = [from_dict(Role, d) for d in self._load_data("configs/board/roles.json")]
+        for role in ROLES:
+            await guild.create_role(name=role.name, permissions=role.permissions, color=role.color)
 
-        welcome_channel = await guild.create_text_channel("🎉welcome👋")
-        await guild.edit(system_channel=welcome_channel)
+        for channel in CHANNELS:
+            await guild.create_text_channel(name=channel.name)
 
-        for category in categories:
+        for category in CATEGORIES:
             category.channel = await guild.create_category(name=category.name)
 
             for channel in category.channels:
@@ -40,8 +35,8 @@ class Admin(commands.Cog):
                     case _:
                         logger.error(f"Unknown channel type: {channel.type}.")
 
-        for role in roles:
-            await guild.create_role(name=role.name, color=discord.Color(int(role.color.lstrip("#"), 16)))
+        await guild.edit(system_channel=discord.utils.get(guild.channels, name="📊logs📈"))
+        await ctx.channel.delete()
 
     @commands.command(name="wipe")
     @commands.has_permissions(administrator=True)

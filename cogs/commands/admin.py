@@ -3,8 +3,9 @@ from discord.ext import commands
 
 import logging
 
-from configs.board.channels import CHANNELS, CATEGORIES
+from configs.board.channels import CHANNELS
 from configs.board.roles import ROLES
+from utils.dataclasses import Category, Channel
 
 logger = logging.getLogger(__name__)
 
@@ -18,13 +19,30 @@ class Admin(commands.Cog):
         guild: discord.Guild = ctx.guild
 
         for role in ROLES:
-            await guild.create_role(name=role.name, permissions=role.permissions, color=role.color)
+            await guild.create_role(
+                name=role.name, 
+                permissions=role.permissions, 
+                color=role.color, 
+                hoist=role.hoist
+            )
 
-        for channel in CHANNELS:
+        channels = [item for item in CHANNELS if isinstance(item, Channel)]
+        categories = [item for item in CHANNELS if isinstance(item, Category)]
+
+        for channel in channels:
             await guild.create_text_channel(name=channel.name)
 
-        for category in CATEGORIES:
-            category.channel = await guild.create_category(name=category.name)
+        await guild.edit(system_channel=discord.utils.get(guild.channels, name="🎉welcome👋"))
+
+        for category in categories:
+            overwrites = { 
+                guild.default_role: discord.PermissionOverwrite(view_channel=False) 
+            }
+
+            for role in [discord.utils.get(guild.roles, name=role.name) for role in category.roles]:
+                overwrites[role] = discord.PermissionOverwrite(view_channel=True)
+
+            category.channel = await guild.create_category(name=category.name, overwrites=overwrites)
 
             for channel in category.channels:
                 match channel.type:
@@ -32,10 +50,7 @@ class Admin(commands.Cog):
                         await guild.create_text_channel(name=channel.name, category=category.channel)
                     case "voice":
                         await guild.create_voice_channel(name=channel.name, category=category.channel)
-                    case _:
-                        logger.error(f"Unknown channel type: {channel.type}.")
 
-        await guild.edit(system_channel=discord.utils.get(guild.channels, name="📊logs📈"))
         await ctx.channel.delete()
 
     @commands.command(name="wipe")

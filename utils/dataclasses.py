@@ -7,16 +7,18 @@ class Channel:
     type: str
 
 @dataclass
+class Role:
+    name: str
+    permissions: discord.Permissions = discord.Permissions.none()
+    color: discord.Color = discord.Color.random()
+    hoist: bool = False
+
+@dataclass
 class Category:
     name: str
     channels: list[Channel]
+    roles: list[Role]
     channel: discord.CategoryChannel = None
-
-@dataclass
-class Role:
-    name: str
-    permissions: discord.Permissions = None
-    color: discord.Color = discord.Color.random()
 
 @dataclass
 class Team:

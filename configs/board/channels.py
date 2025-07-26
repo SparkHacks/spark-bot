@@ -1,10 +1,8 @@
+from configs.board.roles import BOARD_ROLE, LEAD_ROLE
 from utils.dataclasses import Category, Channel
 
 CHANNELS = [
-    Channel(name="🎉welcome👋", type="text")
-]
-
-CATEGORIES = [
+    Channel(name="🎉welcome👋", type="text"),
     Category(
         name="🗞 Hub 📰",
         channels=[
@@ -14,21 +12,24 @@ CATEGORIES = [
             Channel(name="💡suggestions📝",   type="text"),
             Channel(name="📷photos🎞️",        type="text"),
             Channel(name="📚resources🤓",     type="text"),
-        ]
+        ],
+        roles=[BOARD_ROLE]
     ),
     Category(
         name="🤪 Unserious 🎉",
         channels=[
             Channel(name="💬yapping🗣️", type="text"),
             Channel(name="😂memes🗿",   type="text"),
-        ]
+        ],
+        roles=[BOARD_ROLE]
     ),
     Category(
         name="💪 Leads 👑",
         channels=[
             Channel(name="💼discussion📈", type="text"),
             Channel(name="💼leads-vc🎧", type="voice"),
-        ]
+        ],
+        roles=[LEAD_ROLE]
     ),
     Category(
         name="💼 Teams 🤝",
@@ -39,7 +40,8 @@ CATEGORIES = [
             Channel(name="📦logistics📈",      type="text"),
             Channel(name="📱media📸",          type="text"),
             Channel(name="💻webdev👾",         type="text"),
-        ]
+        ],
+        roles=[BOARD_ROLE]
     ),
     Category(
         name="🎤 Voice Chats 🎧",
@@ -51,13 +53,15 @@ CATEGORIES = [
             Channel(name="📦logistics-vc🎧",      type="voice"),
             Channel(name="📱media-vc🎧",          type="voice"),
             Channel(name="💻webdev-vc🎧",         type="voice"),
-        ]
+        ],
+        roles=[BOARD_ROLE]
     ),
     Category(
         name="🤖 SparkHacks Bot ⚙️",
         channels=[
             Channel(name="💬commands🛠️", type="text"),
             Channel(name="📊logs📈",     type="text"),
-        ]
+        ],
+        roles=[]
     ),
 ]

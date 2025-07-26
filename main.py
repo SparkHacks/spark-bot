@@ -16,7 +16,6 @@ DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 
 COGS = [
     "cogs.commands.admin",
-    "cogs.commands.hacker",
     "cogs.events"
 ]
 

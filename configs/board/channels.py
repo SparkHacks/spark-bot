@@ -39,10 +39,9 @@ CHANNELS = [
         name="💼 Teams 🤝",
         channels=[
             Channel(name="💵communications📢", type="text"),
-            Channel(name="🎨design🪄",         type="text"),
             Channel(name="💃experience✨",     type="text"),
             Channel(name="📦logistics📈",      type="text"),
-            Channel(name="📱media📸",          type="text"),
+            Channel(name="📸outreach🎨",        type="text"),
             Channel(name="💻webdev👾",         type="text"),
         ],
         roles=[BOARD_ROLE]
@@ -52,10 +51,9 @@ CHANNELS = [
         channels=[
             Channel(name="🥱lounge😴",            type="voice"),
             Channel(name="💵communications-vc🎧", type="voice"),
-            Channel(name="🎨design-vc🎧",         type="voice"),
             Channel(name="💃experience-vc🎧",     type="voice"),
             Channel(name="📦logistics-vc🎧",      type="voice"),
-            Channel(name="📱media-vc🎧",          type="voice"),
+            Channel(name="📸outreach-vc🎧",       type="voice"),
             Channel(name="💻webdev-vc🎧",         type="voice"),
         ],
         roles=[BOARD_ROLE]

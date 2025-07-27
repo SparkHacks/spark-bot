@@ -62,7 +62,8 @@ class CommandHelpers:
             if member.id not in team.members:
                 continue
 
-            if team_role := discord.utils.get(member.guild.roles, name=team.name) and team_role not in member.roles:
+            team_role = discord.utils.get(member.guild.roles, name=team.name)
+            if team_role not in member.roles:
                 await member.add_roles(team_role)
 
 class Commands(commands.Cog):

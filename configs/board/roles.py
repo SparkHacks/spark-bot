@@ -36,11 +36,6 @@ ROLES = [
         hoist=True
     ),
     Role(
-        name="Design",
-        hex_color="#57F287",
-        hoist=True
-    ),
-    Role(
         name="Experience",
         hex_color="#EB459E",
         hoist=True
@@ -51,7 +46,7 @@ ROLES = [
         hoist=True
     ),
     Role(
-        name="Media",
+        name="Outreach",
         hex_color="#3498DB",
         hoist=True
     ),

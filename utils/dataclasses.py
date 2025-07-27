@@ -1,26 +1,36 @@
 import discord
-from dataclasses import dataclass
 
-@dataclass
-class Channel:
-    name: str
-    type: str
+import os
+from dataclasses import dataclass, field
 
 @dataclass
 class Role:
     name: str
     permissions: discord.Permissions = discord.Permissions.none()
-    color: discord.Color = discord.Color.random()
+    hex_color: str = "#000000"
+    color: discord.Color = field(init=False)
     hoist: bool = False
+
+    def __post_init__(self):
+        self.color = discord.Color(int(self.hex_color[1:], 16))
+
+@dataclass
+class Channel:
+    name: str
+    type: str = "text"
+    roles: list[Role] = field(default_factory=list)
 
 @dataclass
 class Category:
     name: str
     channels: list[Channel]
-    roles: list[Role]
     channel: discord.CategoryChannel = None
+    roles: list[Role] = field(default_factory=list)
 
 @dataclass
 class Team:
     name: str
-    members: list[str]
+    members: list[str] = field(init=False)
+
+    def __post_init__(self):
+        self.members = list(map(int, os.getenv(self.name.upper()).split(",")))

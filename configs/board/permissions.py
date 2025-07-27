@@ -1,6 +1,6 @@
 import discord 
 
-from configs import BASE_PERMISSIONS
+from configs.permissions import BASE_PERMISSIONS
 
 BOARD_PERMISSIONS = discord.Permissions(permissions=BASE_PERMISSIONS.value)
 BOARD_PERMISSIONS.update(

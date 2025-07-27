@@ -1,8 +1,12 @@
 from configs.board.roles import BOARD_ROLE, LEAD_ROLE
 from utils.dataclasses import Category, Channel
 
+WELCOME_CHANNEL_NAME = "🎉welcome👋"
+INTRODUCTIONS_CHANNEL_NAME = "🗣introductions😎"
+
 CHANNELS = [
-    Channel(name="🎉welcome👋", type="text"),
+    Channel(name=WELCOME_CHANNEL_NAME, roles=[BOARD_ROLE]),
+    Channel(name=INTRODUCTIONS_CHANNEL_NAME, roles=[BOARD_ROLE]),
     Category(
         name="🗞 Hub 📰",
         channels=[
@@ -61,7 +65,6 @@ CHANNELS = [
         channels=[
             Channel(name="💬commands🛠️", type="text"),
             Channel(name="📊logs📈",     type="text"),
-        ],
-        roles=[]
+        ]
     ),
 ]

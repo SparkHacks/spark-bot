@@ -5,6 +5,8 @@ import logging
 import os
 from dotenv import load_dotenv
 
+from configs.cogs import COGS
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s | %(levelname)-8s | %(name)s: %(message)s",
@@ -14,14 +16,9 @@ logging.basicConfig(
 load_dotenv()
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 
-COGS = [
-    "cogs.commands.admin",
-    "cogs.events"
-]
-
 if __name__ == "__main__":
     if not DISCORD_TOKEN:
-        logging.critical("DISCORD_TOKEN not found in environment.")
+        logging.critical("DISCORD_TOKEN not found in environment")
         exit(1)
 
     bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())

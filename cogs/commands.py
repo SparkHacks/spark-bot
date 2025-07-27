@@ -4,20 +4,13 @@ from discord.ext import commands
 import logging
 
 from configs.board.channels import WELCOME_CHANNEL_NAME
-from utils.dataclasses import Category, Channel, Role
+from utils.dataclasses import Category, Channel, Role, Team
 
 logger = logging.getLogger(__name__)
 
-class Commands(commands.Cog):
-    def __init__(self, bot: commands.Bot):
-        self.bot = bot
-
+class CommandHelpers:
     @classmethod
-    async def setup( 
-            cls,
-            ctx: commands.Context,
-            roles: list[Role],
-            channels: list[Channel|Category]):
+    async def setup(cls, ctx: commands.Context, roles: list[Role], channels: list[Channel|Category]):
         guild: discord.Guild = ctx.guild
 
         for role in roles:
@@ -61,8 +54,20 @@ class Commands(commands.Cog):
         await guild.edit(system_channel=welcome_channel)
         await welcome_channel.set_permissions(guild.default_role, overwrite=overwrite)
 
-        channel: discord.TextChannel = ctx.channel
-        await channel.delete()
+        await ctx.channel.delete()
+
+    @classmethod
+    async def sync_user(cls, member: discord.Member, teams: list[Team]):
+        for team in teams:
+            if member.id not in team.members:
+                continue
+
+            if team_role := discord.utils.get(member.guild.roles, name=team.name) and team_role not in member.roles:
+                await member.add_roles(team_role)
+
+class Commands(commands.Cog):
+    def __init__(self, bot: commands.Bot):
+        self.bot = bot
 
     @commands.command(name="wipe")
     @commands.guild_only()

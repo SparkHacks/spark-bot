@@ -3,6 +3,7 @@ from discord.ext import commands
 
 import logging
 
+from cogs.board.commands import CommandHelpers
 from configs.board.channels import WELCOME_CHANNEL_NAME, INTRODUCTIONS_CHANNEL_NAME
 from configs.board.teams import TEAMS
 from configs.guilds import BOARD_GUILD_IDS
@@ -17,10 +18,7 @@ class BoardEvents(commands.Cog):
     @commands.Cog.listener()
     @is_in_guilds(*BOARD_GUILD_IDS)
     async def on_member_join(self, member: discord.Member):  
-        for team in TEAMS:
-            if member.id in team.members:
-                await member.add_roles(discord.utils.get(member.guild.roles, name=team.name))
-        
+        await CommandHelpers.sync_user(member, TEAMS)
         await member.add_roles(discord.utils.get(member.guild.roles, name="Board"))
 
         welcome_channel = discord.utils.get(member.guild.channels, name=WELCOME_CHANNEL_NAME)

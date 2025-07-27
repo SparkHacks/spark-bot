@@ -5,7 +5,7 @@ WELCOME_CHANNEL_NAME = "🎉welcome👋"
 INTRODUCTIONS_CHANNEL_NAME = "🗣introductions😎"
 
 CHANNELS = [
-    Channel(name=WELCOME_CHANNEL_NAME, roles=[BOARD_ROLE]),
+    Channel(name=WELCOME_CHANNEL_NAME),
     Channel(name=INTRODUCTIONS_CHANNEL_NAME, roles=[BOARD_ROLE]),
     Category(
         name="🗞 Hub 📰",

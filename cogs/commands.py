@@ -3,6 +3,7 @@ from discord.ext import commands
 
 import logging
 
+from configs.board.channels import WELCOME_CHANNEL_NAME
 from utils.dataclasses import Category, Channel, Role
 
 logger = logging.getLogger(__name__)
@@ -18,7 +19,6 @@ class Commands(commands.Cog):
             roles: list[Role],
             channels: list[Channel|Category]):
         guild: discord.Guild = ctx.guild
-        me: discord.Member = ctx.me
 
         for role in roles:
             await guild.create_role(
@@ -28,22 +28,23 @@ class Commands(commands.Cog):
                 hoist=role.hoist
             )
 
+        me: discord.Member = ctx.me
         await me.add_roles(discord.utils.get(guild.roles, name="Bots"))
 
         for channel in channels:
-            permission_overwrites = { 
+            overwrites = { 
                 guild.default_role: discord.PermissionOverwrite(view_channel=False) 
             }
 
             for role in [discord.utils.get(guild.roles, name=role.name) for role in channel.roles]:
-                permission_overwrites[role] = discord.PermissionOverwrite(view_channel=True)
+                overwrites[role] = discord.PermissionOverwrite(view_channel=True)
 
             if isinstance(channel, Channel):
-                await guild.create_text_channel(name=channel.name, overwrites=permission_overwrites)
+                await guild.create_text_channel(name=channel.name, overwrites=overwrites)
             elif isinstance(channel, Category):
                 category = channel
 
-                category.channel = await guild.create_category(name=category.name, overwrites=permission_overwrites)
+                category.channel = await guild.create_category(name=category.name, overwrites=overwrites)
 
                 for channel in category.channels:
                     match channel.type:
@@ -52,7 +53,16 @@ class Commands(commands.Cog):
                         case "voice":
                             await guild.create_voice_channel(name=channel.name, category=category.channel)
 
-        await ctx.channel.delete()
+        welcome_channel = discord.utils.get(guild.channels, name=WELCOME_CHANNEL_NAME)
+
+        overwrite = welcome_channel.overwrites_for(guild.default_role)
+        overwrite.view_channel = True
+
+        await guild.edit(system_channel=welcome_channel)
+        await welcome_channel.set_permissions(guild.default_role, overwrite=overwrite)
+
+        channel: discord.TextChannel = ctx.channel
+        await channel.delete()
 
     @commands.command(name="wipe")
     @commands.guild_only()

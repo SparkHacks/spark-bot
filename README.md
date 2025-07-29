@@ -1,1 +1,2 @@
-# sparkhacks_board_bot
+# SparkHacks Bot
+Discord bot made by SparkHacks for SparkHacks. Stay tuned...

@@ -10,6 +10,7 @@ BOARD_PERMISSIONS.update(
 
     # Text Channel Permissions
     mention_everyone=True,
+    manage_messages=True,
     send_voice_messages=True,
     send_polls=True,
 

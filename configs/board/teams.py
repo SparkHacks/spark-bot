@@ -7,5 +7,5 @@ TEAMS = [
     Team(name="Experience"),
     Team(name="Logistics"),
     Team(name="Outreach"),
-    Team(name="Webdev")
+    Team(name="Webdev"),
 ]

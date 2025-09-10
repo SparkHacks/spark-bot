@@ -8,6 +8,7 @@ from configs.board.teams import TEAMS
 from configs.guilds import BOARD_GUILD_IDS
 from utils.decorators import is_in_guilds
 
+
 class BoardCommands(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -28,6 +29,7 @@ class BoardCommands(commands.Cog):
 
         for member in guild.members:
             await CommandHelpers.sync_user(member, TEAMS)
- 
+
+
 def setup(bot: commands.Bot):
-    bot.add_cog(BoardCommands(bot)) 
+    bot.add_cog(BoardCommands(bot))

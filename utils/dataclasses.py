@@ -1,7 +1,8 @@
-import discord
-
 import os
 from dataclasses import dataclass, field
+
+import discord
+
 
 @dataclass
 class Role:
@@ -14,11 +15,13 @@ class Role:
     def __post_init__(self):
         self.color = discord.Color(int(self.hex_color[1:], 16))
 
+
 @dataclass
 class Channel:
     name: str
     type: str = "text"
     roles: list[Role] = field(default_factory=list)
+
 
 @dataclass
 class Category:
@@ -26,6 +29,7 @@ class Category:
     channels: list[Channel]
     channel: discord.CategoryChannel = None
     roles: list[Role] = field(default_factory=list)
+
 
 @dataclass
 class Team:

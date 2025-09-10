@@ -11,21 +11,21 @@ CHANNELS = [
         name="🗞 Hub 📰",
         channels=[
             Channel(name="📢announcements🚨", type="text"),
-            Channel(name="💬general💼",       type="text"),
-            Channel(name="🗳️polls📊",         type="text"),
-            Channel(name="💡suggestions📝",   type="text"),
-            Channel(name="📷photos🎞️",        type="text"),
-            Channel(name="📚resources🤓",     type="text"),
+            Channel(name="💬general💼", type="text"),
+            Channel(name="🗳️polls📊", type="text"),
+            Channel(name="💡suggestions📝", type="text"),
+            Channel(name="📷photos🎞️", type="text"),
+            Channel(name="📚resources🤓", type="text"),
         ],
-        roles=[BOARD_ROLE]
+        roles=[BOARD_ROLE],
     ),
     Category(
         name="🤪 Unserious 🎉",
         channels=[
             Channel(name="💬yapping🗣️", type="text"),
-            Channel(name="😂memes🗿",   type="text"),
+            Channel(name="😂memes🗿", type="text"),
         ],
-        roles=[BOARD_ROLE]
+        roles=[BOARD_ROLE],
     ),
     Category(
         name="💪 Leads 👑",
@@ -33,36 +33,36 @@ CHANNELS = [
             Channel(name="💼discussion📈", type="text"),
             Channel(name="💼leads-vc🎧", type="voice"),
         ],
-        roles=[LEAD_ROLE]
+        roles=[LEAD_ROLE],
     ),
     Category(
         name="💼 Teams 🤝",
         channels=[
             Channel(name="💵communications📢", type="text"),
-            Channel(name="💃experience✨",     type="text"),
-            Channel(name="📦logistics📈",      type="text"),
-            Channel(name="📸outreach🎨",        type="text"),
-            Channel(name="💻webdev👾",         type="text"),
+            Channel(name="💃experience✨", type="text"),
+            Channel(name="📦logistics📈", type="text"),
+            Channel(name="📸outreach🎨", type="text"),
+            Channel(name="💻webdev👾", type="text"),
         ],
-        roles=[BOARD_ROLE]
+        roles=[BOARD_ROLE],
     ),
     Category(
         name="🎤 Voice Chats 🎧",
         channels=[
-            Channel(name="🥱lounge😴",            type="voice"),
+            Channel(name="🥱lounge😴", type="voice"),
             Channel(name="💵communications-vc🎧", type="voice"),
-            Channel(name="💃experience-vc🎧",     type="voice"),
-            Channel(name="📦logistics-vc🎧",      type="voice"),
-            Channel(name="📸outreach-vc🎧",       type="voice"),
-            Channel(name="💻webdev-vc🎧",         type="voice"),
+            Channel(name="💃experience-vc🎧", type="voice"),
+            Channel(name="📦logistics-vc🎧", type="voice"),
+            Channel(name="📸outreach-vc🎧", type="voice"),
+            Channel(name="💻webdev-vc🎧", type="voice"),
         ],
-        roles=[BOARD_ROLE]
+        roles=[BOARD_ROLE],
     ),
     Category(
         name="🤖 SparkHacks Bot ⚙️",
         channels=[
             Channel(name="💬commands🛠️", type="text"),
-            Channel(name="📊logs📈",     type="text"),
-        ]
+            Channel(name="📊logs📈", type="text"),
+        ],
     ),
 ]

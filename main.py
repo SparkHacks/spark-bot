@@ -1,16 +1,15 @@
-import discord
-from discord.ext import commands
-
 import logging
 import os
-from dotenv import load_dotenv
+from pathlib import Path
 
-from configs.cogs import COGS
+import discord
+from discord.ext import commands
+from dotenv import load_dotenv
 
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s | %(levelname)-8s | %(name)s: %(message)s",
-    handlers=[logging.StreamHandler()]
+    handlers=[logging.StreamHandler()],
 )
 
 load_dotenv()
@@ -23,7 +22,11 @@ if __name__ == "__main__":
 
     bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
 
-    for cog in COGS:
+    for cog in [
+        str(path.with_suffix("")).replace("/", ".")
+        for path in Path("cogs").rglob("*.py")
+        if path.name != "__init__.py"
+    ]:
         bot.load_extension(cog)
 
     bot.run(DISCORD_TOKEN)

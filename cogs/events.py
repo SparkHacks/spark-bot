@@ -13,7 +13,8 @@ class Events(commands.Cog):
     async def on_ready(self):
         logger.info(f"{self.bot.user.name} is ready and online!")
         logger.info(
-            f"{self.bot.user.name} is connected to guilds: {[f'{guild.name}' for guild in self.bot.guilds]}"
+            f"{self.bot.user.name} is connected to guilds: "
+            f"{[f'{guild.name}' for guild in self.bot.guilds]}"
         )
 
 

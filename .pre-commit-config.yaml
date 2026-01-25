@@ -12,6 +12,11 @@ repos:
     hooks:
       - id: python-use-type-annotations
 
+  - repo: https://github.com/PyCQA/isort
+    rev: 6.0.1
+    hooks:
+      - id: isort
+
   - repo: https://github.com/psf/black
     rev: 25.1.0
     hooks:
@@ -25,8 +30,3 @@ repos:
       - id: flake8
         args:
           - --extend-ignore=E203
-
-  - repo: https://github.com/PyCQA/isort
-    rev: 6.0.1
-    hooks:
-      - id: isort

@@ -1,18 +1,14 @@
-import logging
-
 import discord
 from discord.ext import commands
 
 from cogs.board.commands import CommandHelpers
 from configs.board.channels import (
     INTRODUCTIONS_CHANNEL_NAME,
-    WELCOME_CHANNEL_NAME
+    WELCOME_CHANNEL_NAME,
 )
 from configs.board.teams import TEAMS
 from configs.guilds import BOARD_GUILD_IDS
 from utils.decorators import is_in_guilds
-
-logger = logging.getLogger(__name__)
 
 
 class BoardEvents(commands.Cog):
@@ -38,14 +34,16 @@ class BoardEvents(commands.Cog):
             title=f"Welcome to {member.guild.name}!",
             description=(
                 f"Glad to see you here, {member.mention}! "
-                f"Make sure to check out {introductions_channel.mention} and introduce yourself to everyone!"
+                f"Make sure to check out {introductions_channel.mention} "
+                "and introduce yourself to everyone!"
             ),
             color=discord.Color(int("#A5A8C3"[1:], 16)),
         )
 
         if len(member.roles) == 1:
             embed.set_footer(
-                f"{member.guild.owner.mention}, please assign appropriate roles to {member.display_name}!"
+                f"{member.guild.owner.mention}, "
+                f"please assign appropriate roles to {member.display_name}!"
             )
 
         await welcome_channel.send(embed=embed)

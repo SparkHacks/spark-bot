@@ -22,11 +22,10 @@ if __name__ == "__main__":
 
     bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
 
-    for cog in [
-        str(path.with_suffix("")).replace("/", ".")
-        for path in Path("cogs").rglob("*.py")
-        if path.name != "__init__.py"
-    ]:
-        bot.load_extension(cog)
+    for p in Path("cogs/commands").iterdir():
+        if p.suffix == ".py" and p.stem != "__init__":
+            bot.load_extension(f"cogs.commands.{p.stem}")
+
+    bot.load_extension("cogs.events")
 
     bot.run(DISCORD_TOKEN)

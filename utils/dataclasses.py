@@ -1,4 +1,3 @@
-import os
 from dataclasses import dataclass, field
 
 import discord
@@ -8,7 +7,7 @@ import discord
 class Role:
     name: str
     permissions: discord.Permissions = discord.Permissions.none()
-    hex_color: str = "#000000"
+    hex_color: str = "#FFFFFF"
     color: discord.Color = field(init=False)
     hoist: bool = False
 
@@ -34,7 +33,4 @@ class Category:
 @dataclass
 class Team:
     name: str
-    members: list[str] = field(init=False)
-
-    def __post_init__(self):
-        self.members = list(map(int, os.getenv(self.name.upper()).split(",")))
+    members: list[str]

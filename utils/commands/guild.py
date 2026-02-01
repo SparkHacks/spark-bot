@@ -1,5 +1,7 @@
 import discord
 
+from configs.hackathon.roles import BOARD
+from configs.permissions.overwrites import DENY, READ_WRITE
 from utils.dataclasses import Category, Channel, Role
 
 
@@ -17,15 +19,17 @@ async def setup(
         )
 
     for channel in channels:
+        overwrites = {}
+
         overwrites = {
-            guild.default_role: discord.PermissionOverwrite(view_channel=False)
+            guild.default_role: DENY,
+            discord.utils.get(guild.roles, name=BOARD.name): READ_WRITE,
         }
 
-        for role in [
-            discord.utils.get(guild.roles, name=role.name)
-            for role in channel.roles
-        ]:
-            overwrites[role] = discord.PermissionOverwrite(view_channel=True)
+        for role, overwrite in channel.overwrites.items():
+            overwrites[discord.utils.get(guild.roles, name=role.name)] = (
+                overwrite
+            )
 
         if isinstance(channel, Channel):
             await guild.create_text_channel(
@@ -34,21 +38,32 @@ async def setup(
         elif isinstance(channel, Category):
             category = channel
 
-            category.channel = await guild.create_category(
+            category_channel = await guild.create_category(
                 name=category.name, overwrites=overwrites
             )
 
             for channel in category.channels:
+                for role, overwrite in channel.overwrites.items():
+                    overwrites[
+                        discord.utils.get(guild.roles, name=role.name)
+                    ] = overwrite
+
                 match channel.type:
                     case "text":
                         await guild.create_text_channel(
-                            name=channel.name, category=category.channel
+                            name=channel.name,
+                            category=category_channel,
+                            overwrites=overwrites,
                         )
                     case "voice":
                         await guild.create_voice_channel(
-                            name=channel.name, category=category.channel
+                            name=channel.name,
+                            category=category_channel,
+                            overwrites=overwrites,
                         )
                     case "forum":
                         await guild.create_forum_channel(
-                            name=channel.name, category=category.channel
+                            name=channel.name,
+                            category=category_channel,
+                            overwrites=overwrites,
                         )

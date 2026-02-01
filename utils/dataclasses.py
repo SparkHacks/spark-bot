@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 import discord
 
 
-@dataclass
+@dataclass(frozen=True)
 class Role:
     name: str
     permissions: discord.Permissions = discord.Permissions.none()
@@ -12,25 +12,32 @@ class Role:
     hoist: bool = False
 
     def __post_init__(self):
-        self.color = discord.Color(int(self.hex_color[1:], 16))
+        object.__setattr__(
+            self, "color", discord.Color(int(self.hex_color[1:], 16))
+        )
 
 
-@dataclass
+@dataclass(frozen=True)
 class Channel:
     name: str
     type: str = "text"
     roles: list[Role] = field(default_factory=list)
+    overwrites: dict[Role, discord.PermissionOverwrite] = field(
+        default_factory=dict
+    )
 
 
-@dataclass
+@dataclass(frozen=True)
 class Category:
     name: str
     channels: list[Channel]
-    channel: discord.CategoryChannel = None
     roles: list[Role] = field(default_factory=list)
+    overwrites: dict[Role, discord.PermissionOverwrite] = field(
+        default_factory=dict
+    )
 
 
-@dataclass
+@dataclass(frozen=True)
 class Team:
     name: str
     members: list[str]

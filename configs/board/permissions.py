@@ -1,11 +1,32 @@
 import discord
 
-from configs.permissions import BASE_PERMISSIONS
+BASE_PERMISSIONS = discord.Permissions(
+    # General Server Permissions
+    view_channel=True,
+    # Membership Permissions
+    change_nickname=True,
+    # Text Channel Permissions
+    send_messages=True,
+    send_messages_in_threads=True,
+    create_public_threads=True,
+    embed_links=True,
+    attach_files=True,
+    add_reactions=True,
+    use_external_emojis=True,
+    use_external_stickers=True,
+    read_message_history=True,
+    # Voice Channels Permissions
+    connect=True,
+    speak=True,
+    stream=True,
+    use_voice_activation=True,
+    # Apps Permissions
+    use_application_commands=True,
+)
 
 BOARD_PERMISSIONS = discord.Permissions(permissions=BASE_PERMISSIONS.value)
 BOARD_PERMISSIONS.update(
     # General Server Permissions
-    create_expressions=True,
     manage_expressions=True,
     # Text Channel Permissions
     mention_everyone=True,

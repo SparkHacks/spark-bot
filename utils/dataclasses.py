@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from typing import Union
 
 import discord
 
@@ -7,13 +8,28 @@ import discord
 class Role:
     name: str
     permissions: discord.Permissions = discord.Permissions.none()
-    hex_color: str = "#FFFFFF"
-    color: discord.Color = field(init=False)
+    color: Union[discord.Color, str] = "#FFFFFF"
+    hoist: bool = False
+
+    def __post_init__(self):
+        if isinstance(self.color, str):
+            object.__setattr__(
+                self, "color", discord.Color(int(self.color[1:], 16))
+            )
+
+
+@dataclass(frozen=True)
+class RoleCategory:
+    name: str
+    permissions: discord.Permissions = discord.Permissions.none()
+    color: discord.Color = discord.Color(int("292B2F", 16))
     hoist: bool = False
 
     def __post_init__(self):
         object.__setattr__(
-            self, "color", discord.Color(int(self.hex_color[1:], 16))
+            self,
+            "name",
+            f"\u2063{self.name:{'\u2002'}^{34}}{'\u2002' * 5}\u2063",
         )
 
 
@@ -28,7 +44,7 @@ class Channel:
 
 
 @dataclass(frozen=True)
-class Category:
+class ChannelCategory:
     name: str
     channels: list[Channel]
     roles: list[Role] = field(default_factory=list)

@@ -22,6 +22,7 @@ class Events(commands.Cog):
             f"{[f'{guild.name}' for guild in self.bot.guilds]}"
         )
 
+    @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
         guild_id = member.guild.id
 

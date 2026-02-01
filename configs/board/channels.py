@@ -1,5 +1,5 @@
 from configs.board.roles import BOARD_ROLE, LEAD_ROLE
-from utils.dataclasses import Category, Channel
+from utils.dataclasses import Channel, ChannelCategory
 
 WELCOME_CHANNEL_NAME = "🎉welcome👋"
 INTRODUCTIONS_CHANNEL_NAME = "🗣introductions😎"
@@ -7,7 +7,7 @@ INTRODUCTIONS_CHANNEL_NAME = "🗣introductions😎"
 CHANNELS = [
     Channel(name=WELCOME_CHANNEL_NAME),
     Channel(name=INTRODUCTIONS_CHANNEL_NAME, roles=[BOARD_ROLE]),
-    Category(
+    ChannelCategory(
         name="🗞 Hub 📰",
         channels=[
             Channel(name="📢announcements🚨", type="text"),
@@ -19,7 +19,7 @@ CHANNELS = [
         ],
         roles=[BOARD_ROLE],
     ),
-    Category(
+    ChannelCategory(
         name="🤪 Unserious 🎉",
         channels=[
             Channel(name="💬yapping🗣️", type="text"),
@@ -27,7 +27,7 @@ CHANNELS = [
         ],
         roles=[BOARD_ROLE],
     ),
-    Category(
+    ChannelCategory(
         name="💪 Leads 👑",
         channels=[
             Channel(name="💼discussion📈", type="text"),
@@ -35,7 +35,7 @@ CHANNELS = [
         ],
         roles=[LEAD_ROLE],
     ),
-    Category(
+    ChannelCategory(
         name="💼 Teams 🤝",
         channels=[
             Channel(name="💵communications📢", type="text"),
@@ -46,7 +46,7 @@ CHANNELS = [
         ],
         roles=[BOARD_ROLE],
     ),
-    Category(
+    ChannelCategory(
         name="🎤 Voice Chats 🎧",
         channels=[
             Channel(name="🥱lounge😴", type="voice"),
@@ -58,7 +58,7 @@ CHANNELS = [
         ],
         roles=[BOARD_ROLE],
     ),
-    Category(
+    ChannelCategory(
         name="🤖 SparkHacks Bot ⚙️",
         channels=[
             Channel(name="💬commands🛠️", type="text"),

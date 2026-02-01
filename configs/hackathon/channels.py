@@ -1,140 +1,120 @@
-from configs.hackathon.roles import HACKER, JUDGE, MENTOR, SPONSOR
+from configs.hackathon.roles import (
+    EVERYONE_ROLE,
+    HACKER_ROLE,
+    JUDGE_ROLE,
+    MENTOR_ROLE,
+    SPONSOR_ROLE,
+)
 from configs.permissions.overwrites import DENY, READ_ONLY, READ_WRITE
-from utils.dataclasses import Category, Channel
+from utils.dataclasses import Channel, ChannelCategory
 
 WELCOME_CHANNEL_NAME = "🎉welcome👋"
 RULES_CHANNEL_NAME = "📜rules⚖️"
+INTRODUCTIONS_CHANNEL_NAME = "🗣introductions✨"
 
 CHANNELS = [
-    Channel(name=WELCOME_CHANNEL_NAME),
-    Channel(name=RULES_CHANNEL_NAME),
-    Category(
+    Channel(name=WELCOME_CHANNEL_NAME, overwrites={EVERYONE_ROLE: READ_ONLY}),
+    Channel(name=RULES_CHANNEL_NAME, overwrites={EVERYONE_ROLE: READ_ONLY}),
+    Channel(
+        name=INTRODUCTIONS_CHANNEL_NAME, overwrites={EVERYONE_ROLE: READ_WRITE}
+    ),
+    ChannelCategory(
         name="🗞 Spark Hub 📰",
         channels=[
             Channel(
                 name="🚨fire🔥",
-                type="text",
                 overwrites={
-                    SPONSOR: DENY,
-                    JUDGE: DENY,
-                    MENTOR: DENY,
+                    SPONSOR_ROLE: DENY,
+                    JUDGE_ROLE: DENY,
+                    MENTOR_ROLE: DENY,
                 },
             ),
             Channel(
                 name="💬board-chat🧠",
-                type="text",
                 overwrites={
-                    SPONSOR: DENY,
-                    JUDGE: DENY,
-                    MENTOR: DENY,
+                    SPONSOR_ROLE: DENY,
+                    JUDGE_ROLE: DENY,
+                    MENTOR_ROLE: DENY,
                 },
             ),
             Channel(
                 name="🤝sponsor-chat💼",
-                type="text",
                 overwrites={
-                    SPONSOR: READ_WRITE,
-                    JUDGE: DENY,
-                    MENTOR: DENY,
+                    SPONSOR_ROLE: READ_WRITE,
+                    JUDGE_ROLE: DENY,
+                    MENTOR_ROLE: DENY,
                 },
             ),
             Channel(
                 name="⚖️judge-chat🧑‍⚖️",
-                type="text",
-                roles=[JUDGE],
+                roles=[JUDGE_ROLE],
                 overwrites={
-                    SPONSOR: DENY,
-                    JUDGE: READ_WRITE,
-                    MENTOR: DENY,
+                    SPONSOR_ROLE: DENY,
+                    JUDGE_ROLE: READ_WRITE,
+                    MENTOR_ROLE: DENY,
                 },
             ),
             Channel(
                 name="🧑‍🏫mentor-chat💡",
-                type="text",
                 overwrites={
-                    SPONSOR: DENY,
-                    JUDGE: DENY,
-                    MENTOR: READ_WRITE,
+                    SPONSOR_ROLE: DENY,
+                    JUDGE_ROLE: DENY,
+                    MENTOR_ROLE: READ_WRITE,
                 },
             ),
         ],
         overwrites={
-            SPONSOR: READ_ONLY,
-            JUDGE: READ_ONLY,
-            MENTOR: READ_ONLY,
+            SPONSOR_ROLE: READ_ONLY,
+            JUDGE_ROLE: READ_ONLY,
+            MENTOR_ROLE: READ_ONLY,
         },
     ),
-    Category(
+    ChannelCategory(
         name="📢 Info Hub 📚",
         channels=[
-            Channel(name="📢announcements🚨", type="text"),
-            Channel(name="📚resources🤓", type="text"),
+            Channel(name="📢announcements🚨"),
+            Channel(name="📚resources🤓"),
         ],
         overwrites={
-            SPONSOR: READ_ONLY,
-            JUDGE: READ_ONLY,
-            MENTOR: READ_ONLY,
-            HACKER: READ_ONLY,
+            SPONSOR_ROLE: READ_ONLY,
+            JUDGE_ROLE: READ_ONLY,
+            MENTOR_ROLE: READ_ONLY,
+            HACKER_ROLE: READ_ONLY,
+            EVERYONE_ROLE: READ_ONLY,
         },
     ),
-    Category(
-        name="👋 Introductions 🧩",
-        channels=[
-            Channel(
-                name="🏗️board-introductions🧠",
-                type="text",
-            ),
-            Channel(
-                name="⚖️judge-and-mentor-introductions🧑‍🏫",
-                type="text",
-                overwrites={
-                    JUDGE: READ_WRITE,
-                    MENTOR: READ_WRITE,
-                },
-            ),
-            Channel(
-                name="💻hacker-introductions🚀",
-                type="text",
-                overwrites={HACKER: READ_WRITE},
-            ),
-        ],
-        overwrites={
-            SPONSOR: READ_ONLY,
-            JUDGE: READ_ONLY,
-            MENTOR: READ_ONLY,
-            HACKER: READ_ONLY,
-        },
-    ),
-    Category(
+    ChannelCategory(
         name="🗞 Hackers Hub 👨‍💻",
         channels=[
-            Channel(name="💬general💼", type="text"),
-            Channel(name="💬yapping🗣️", type="text"),
-            Channel(name="😂memes🗿", type="text"),
-            Channel(name="📷photo-dump🎞️", type="text"),
+            Channel(name="💬general💼"),
+            Channel(name="💬yapping🗣️"),
+            Channel(name="😂memes🗿"),
+            Channel(name="💼linkedin🔗"),
+            Channel(name="📷photo-dump🎞️"),
         ],
         overwrites={
-            SPONSOR: READ_WRITE,
-            JUDGE: READ_WRITE,
-            MENTOR: READ_WRITE,
-            HACKER: READ_WRITE,
+            SPONSOR_ROLE: READ_WRITE,
+            JUDGE_ROLE: READ_WRITE,
+            MENTOR_ROLE: READ_WRITE,
+            HACKER_ROLE: READ_WRITE,
         },
     ),
-    Category(
+    ChannelCategory(
         name="🛠️ Support Hub 🆘",
         channels=[
             Channel(name="🤝looking-for-a-team🔍", type="forum"),
             Channel(name="❓ask-sparkhacks📣", type="forum"),
+            Channel(name="🤝ask-a-sponsor💼", type="forum"),
             Channel(name="🧑‍🏫ask-a-mentor💬", type="forum"),
         ],
         overwrites={
-            SPONSOR: READ_WRITE,
-            JUDGE: READ_WRITE,
-            MENTOR: READ_WRITE,
-            HACKER: READ_WRITE,
+            SPONSOR_ROLE: READ_WRITE,
+            JUDGE_ROLE: READ_WRITE,
+            MENTOR_ROLE: READ_WRITE,
+            HACKER_ROLE: READ_WRITE,
         },
     ),
-    Category(
+    ChannelCategory(
         name="🎤 Voice Chats 🎧",
         channels=[
             Channel(name="🛋️spark-lounge💬", type="voice"),
@@ -143,22 +123,22 @@ CHANNELS = [
             Channel(name="🧑‍🏫mentor-oh-3🎙️", type="voice"),
         ],
         overwrites={
-            SPONSOR: READ_WRITE,
-            JUDGE: READ_WRITE,
-            MENTOR: READ_WRITE,
-            HACKER: READ_WRITE,
+            SPONSOR_ROLE: READ_WRITE,
+            JUDGE_ROLE: READ_WRITE,
+            MENTOR_ROLE: READ_WRITE,
+            HACKER_ROLE: READ_WRITE,
         },
     ),
-    Category(
+    ChannelCategory(
         name="🤖 Bots Hub ⚙️",
         channels=[
-            Channel(name="commands", type="text"),
-            Channel(name="sys-logs", type="text"),
-            Channel(name="bot-logs", type="text"),
-            Channel(name="mod-logs", type="text"),
-            Channel(name="member-logs", type="text"),
-            Channel(name="message-logs", type="text"),
-            Channel(name="server-logs", type="text"),
+            Channel(name="commands"),
+            Channel(name="sys-logs"),
+            Channel(name="bot-logs"),
+            Channel(name="mod-logs"),
+            Channel(name="member-logs"),
+            Channel(name="message-logs"),
+            Channel(name="server-logs"),
         ],
     ),
 ]

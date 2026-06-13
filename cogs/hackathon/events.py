@@ -1,6 +1,5 @@
 import discord
 
-import utils.commands.role
 from configs.hackathon.channels import WELCOME_CHANNEL_NAME
 from configs.hackathon.roles import (
     EXPERIENCE_ROLE_CATEGORY,
@@ -10,8 +9,6 @@ from configs.hackathon.roles import (
 
 
 async def on_member_join(member: discord.Member):
-    await utils.commands.role.sync(member.guild, [member])
-
     await member.add_roles(
         discord.utils.get(
             member.guild.roles, name=PERSONAL_ROLE_CATEGORY.name

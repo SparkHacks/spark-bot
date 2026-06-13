@@ -5,7 +5,7 @@ from discord.ext import commands
 
 import cogs.board.events
 import cogs.hackathon.events
-from configs.guilds import BOARD_GUILD_IDS, HACKATHON_GUILD_IDS
+from utils.guilds import is_board_guild, is_hackathon_guild
 
 logger = logging.getLogger(__name__)
 
@@ -24,11 +24,11 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
-        guild_id = member.guild.id
+        name = member.guild.name
 
-        if guild_id in BOARD_GUILD_IDS:
+        if is_board_guild(name):
             await cogs.board.events.on_member_join(member)
-        elif guild_id in HACKATHON_GUILD_IDS:
+        elif is_hackathon_guild(name):
             await cogs.hackathon.events.on_member_join(member)
 
 

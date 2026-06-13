@@ -51,9 +51,3 @@ class ChannelCategory:
     overwrites: dict[Role, discord.PermissionOverwrite] = field(
         default_factory=dict
     )
-
-
-@dataclass(frozen=True)
-class Team:
-    name: str
-    members: list[str]

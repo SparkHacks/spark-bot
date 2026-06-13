@@ -5,11 +5,7 @@ from discord.ext import commands
 
 import cogs.board.commands.guild
 import cogs.hackathon.commands.guild
-from configs.guilds import (
-    BOARD_GUILD_IDS,
-    HACKATHON_GUILD_IDS,
-    SPARKHACKS_GUILD_IDS,
-)
+from utils.guilds import is_board_guild, is_hackathon_guild
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +17,6 @@ class GuildCommands(commands.Cog):
     guild = discord.SlashCommandGroup(
         name="guild",
         description="",
-        guild_ids=SPARKHACKS_GUILD_IDS,
         default_member_permissions=discord.Permissions(administrator=True),
     )
 
@@ -34,9 +29,9 @@ class GuildCommands(commands.Cog):
 
         guild: discord.Guild = ctx.guild
 
-        if guild.id in BOARD_GUILD_IDS:
+        if is_board_guild(guild.name):
             await cogs.board.commands.guild.setup(guild)
-        elif guild.id in HACKATHON_GUILD_IDS:
+        elif is_hackathon_guild(guild.name):
             await cogs.hackathon.commands.guild.setup(guild)
 
         bots_role = discord.utils.get(guild.roles, name="Bots")

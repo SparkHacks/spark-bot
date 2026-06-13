@@ -1,6 +1,0 @@
-from utils import env_int_list
-
-BOARD_GUILD_IDS = env_int_list("BOARD_GUILD_IDS")
-HACKATHON_GUILD_IDS = env_int_list("HACKATHON_GUILD_IDS")
-
-SPARKHACKS_GUILD_IDS = BOARD_GUILD_IDS + HACKATHON_GUILD_IDS

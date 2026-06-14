@@ -1,32 +1,45 @@
 import discord
+from discord.ext import commands
 
-from configs.hackathon.channels import WELCOME_CHANNEL_NAME
-from configs.hackathon.roles import (
-    EXPERIENCE_ROLE_CATEGORY,
-    PERSONAL_ROLE_CATEGORY,
-    TEAM_STATUS_ROLE_CATEGORY,
-)
+from config import hackathon
+from utils.guilds import is_hackathon_guild
 
 
-async def on_member_join(member: discord.Member):
-    await member.add_roles(
-        discord.utils.get(
-            member.guild.roles, name=PERSONAL_ROLE_CATEGORY.name
-        ),
-        discord.utils.get(
-            member.guild.roles, name=EXPERIENCE_ROLE_CATEGORY.name
-        ),
-        discord.utils.get(
-            member.guild.roles, name=TEAM_STATUS_ROLE_CATEGORY.name
-        ),
-    )
+class HackathonEvents(commands.Cog):
+    def __init__(self, bot: commands.Bot):
+        self.bot = bot
 
-    embed = discord.Embed(
-        title=f"Welcome to {member.guild.name}!",
-        description=(f"Glad to see you here, {member.mention}!"),
-        color=discord.Color(int("#A5A8C3"[1:], 16)),
-    )
+    @commands.Cog.listener()
+    async def on_member_join(self, member: discord.Member):
+        if not is_hackathon_guild(member.guild.name):
+            return
 
-    await discord.utils.get(
-        member.guild.channels, name=WELCOME_CHANNEL_NAME
-    ).send(embed=embed)
+        await member.add_roles(
+            discord.utils.get(
+                member.guild.roles,
+                name=hackathon.roles.categories.PERSONAL.name,
+            ),
+            discord.utils.get(
+                member.guild.roles,
+                name=hackathon.roles.categories.EXPERIENCE.name,
+            ),
+            discord.utils.get(
+                member.guild.roles,
+                name=hackathon.roles.categories.TEAM_STATUS.name,
+            ),
+        )
+
+        embed = discord.Embed(
+            title=f"Welcome to {member.guild.name}!",
+            description=f"Glad to see you here, {member.mention}!",
+            color=discord.Color(int("#A5A8C3"[1:], 16)),
+        )
+
+        await discord.utils.get(
+            member.guild.channels,
+            name=hackathon.channels.WELCOME.name,
+        ).send(embed=embed)
+
+
+def setup(bot: commands.Bot):
+    bot.add_cog(HackathonEvents(bot))

@@ -37,7 +37,6 @@ class RoleCategory:
 class Channel:
     name: str
     type: str = "text"
-    roles: list[Role] = field(default_factory=list)
     overwrites: dict[Role, discord.PermissionOverwrite] = field(
         default_factory=dict
     )
@@ -47,7 +46,6 @@ class Channel:
 class ChannelCategory:
     name: str
     channels: list[Channel]
-    roles: list[Role] = field(default_factory=list)
     overwrites: dict[Role, discord.PermissionOverwrite] = field(
         default_factory=dict
     )

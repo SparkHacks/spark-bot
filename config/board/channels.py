@@ -1,12 +1,15 @@
-from configs.board.roles import BOARD_ROLE, LEAD_ROLE
+from config import permissions, roles
 from utils.dataclasses import Channel, ChannelCategory
 
-WELCOME_CHANNEL_NAME = "🎉welcome👋"
-INTRODUCTIONS_CHANNEL_NAME = "🗣introductions😎"
+WELCOME = Channel(
+    name="🎉welcome👋",
+    overwrites={roles.EVERYONE: permissions.overwrites.READ_ONLY},
+)
+INTRODUCTIONS = Channel(name="🗣introductions😎")
 
 CHANNELS = [
-    Channel(name=WELCOME_CHANNEL_NAME),
-    Channel(name=INTRODUCTIONS_CHANNEL_NAME, roles=[BOARD_ROLE]),
+    WELCOME,
+    INTRODUCTIONS,
     ChannelCategory(
         name="🗞 Hub 📰",
         channels=[
@@ -17,7 +20,6 @@ CHANNELS = [
             Channel(name="📷photos🎞️", type="text"),
             Channel(name="📚resources🤓", type="text"),
         ],
-        roles=[BOARD_ROLE],
     ),
     ChannelCategory(
         name="🤪 Unserious 🎉",
@@ -25,7 +27,6 @@ CHANNELS = [
             Channel(name="💬yapping🗣️", type="text"),
             Channel(name="😂memes🗿", type="text"),
         ],
-        roles=[BOARD_ROLE],
     ),
     ChannelCategory(
         name="💪 Leads 👑",
@@ -33,7 +34,6 @@ CHANNELS = [
             Channel(name="💼discussion📈", type="text"),
             Channel(name="💼leads-vc🎧", type="voice"),
         ],
-        roles=[LEAD_ROLE],
     ),
     ChannelCategory(
         name="💼 Teams 🤝",
@@ -44,7 +44,6 @@ CHANNELS = [
             Channel(name="📸outreach🎨", type="text"),
             Channel(name="💻webdev👾", type="text"),
         ],
-        roles=[BOARD_ROLE],
     ),
     ChannelCategory(
         name="🎤 Voice Chats 🎧",
@@ -56,7 +55,6 @@ CHANNELS = [
             Channel(name="📸outreach-vc🎧", type="voice"),
             Channel(name="💻webdev-vc🎧", type="voice"),
         ],
-        roles=[BOARD_ROLE],
     ),
     ChannelCategory(
         name="🤖 SparkHacks Bot ⚙️",

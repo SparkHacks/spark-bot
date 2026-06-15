@@ -132,7 +132,6 @@ CHANNELS = [
         channels=[
             Channel(name="commands"),
             Channel(name="sys-logs"),
-            Channel(name="bot-logs"),
             Channel(name="mod-logs"),
             Channel(name="member-logs"),
             Channel(name="message-logs"),

@@ -3,8 +3,8 @@ import logging
 import discord
 from discord.ext import commands
 
-import embeds
 from config import board, hackathon, permissions
+from static import embeds
 from utils.dataclasses import Channel, ChannelCategory
 from utils.guilds import is_board_guild, is_hackathon_guild
 
@@ -109,7 +109,7 @@ class GuildCommands(commands.Cog):
             rules = discord.utils.get(
                 guild.channels, name=hackathon.channels.RULES.name
             )
-            await rules.send(embed=embeds.rules)
+            await rules.send(embed=embeds.RULES)
 
         await guild.default_role.edit(permissions=permissions.EVERYONE)
         await guild.edit(system_channel=welcome_channel)

@@ -109,10 +109,7 @@ class GuildCommands(commands.Cog):
             rules = discord.utils.get(
                 guild.channels, name=hackathon.channels.RULES.name
             )
-            await rules.send(
-                embed=embeds.rules,
-                file=discord.File("assets/icon.png", filename="icon.png"),
-            )
+            await rules.send(embed=embeds.rules)
 
         await guild.default_role.edit(permissions=permissions.EVERYONE)
         await guild.edit(system_channel=welcome_channel)

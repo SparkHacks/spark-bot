@@ -57,5 +57,4 @@ rules.add_field(
     inline=False,
 )
 
-rules.set_author(name="SparkHacks Rules", icon_url="attachment://icon.png")
-rules.set_thumbnail(url="attachment://icon.png")
+rules.set_author(name="SparkHacks Rules")

@@ -105,11 +105,11 @@ CHANNELS = [
         name="🤖 Bots Hub ⚙️",
         channels=[
             Channel(name="💬commands🛠️"),
-            Channel(name="sys-logs"),
-            Channel(name="mod-logs"),
-            Channel(name="member-logs"),
-            Channel(name="message-logs"),
-            Channel(name="server-logs"),
+            Channel(name="🖥️sys-logs⚙️"),
+            Channel(name="🛡️mod-logs🔨"),
+            Channel(name="👥member-logs📋"),
+            Channel(name="💬message-logs📝"),
+            Channel(name="🗄️server-logs📜"),
         ],
     ),
 ]

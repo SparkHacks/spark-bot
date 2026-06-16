@@ -6,13 +6,22 @@ from utils.dataclasses import Role
 from . import categories
 
 SPONSOR = Role(
-    name="Sponsor", permissions=permissions.BASE, color="#F8AAFF", hoist=True
+    name="Sponsor",
+    permissions=permissions.BASE,
+    color="#F8AAFF",
+    hoist=True,
 )
 MENTOR = Role(
-    name="Mentor", permissions=permissions.BASE, color="#0F218A", hoist=True
+    name="Mentor",
+    permissions=permissions.BASE,
+    color="#0F218A",
+    hoist=True,
 )
 HACKER = Role(
-    name="Hacker", permissions=permissions.BASE, color="#F1C40F", hoist=True
+    name="Hacker",
+    permissions=permissions.BASE,
+    color="#F1C40F",
+    hoist=True,
 )
 
 ROLES = [

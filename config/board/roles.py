@@ -5,6 +5,7 @@ LEAD = Role(name="Lead", color="#9E9E9E", hoist=True)
 
 ROLES = [
     roles.DIRECTOR,
+    roles.ALUMNI,
     LEAD,
     Role(name="Communications", color="#E91E63", hoist=True),
     Role(name="Experience", color="#EB459E", hoist=True),

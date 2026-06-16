@@ -20,57 +20,72 @@ async def create_guild(guild: discord.Guild, roles: list, channels: list):
             hoist=role.hoist,
         )
 
-    board = discord.utils.get(guild.roles, name="Board")
-
     for item in channels:
         overwrites = {
             guild.default_role: permissions.overwrites.DENY,
-            board: permissions.overwrites.READ_WRITE,
+            discord.utils.get(
+                guild.roles, name="Board"
+            ): permissions.overwrites.VIEW,
         }
+
         for role, overwrite in item.overwrites.items():
-            key = (
-                guild.default_role
-                if role.name == "@everyone"
-                else discord.utils.get(guild.roles, name=role.name)
-            )
-            overwrites[key] = overwrite
+            overwrites[
+                (
+                    guild.default_role
+                    if role.name == "@everyone"
+                    else discord.utils.get(guild.roles, name=role.name)
+                )
+            ] = overwrite
 
         if isinstance(item, Channel):
-            await guild.create_text_channel(
-                name=item.name, overwrites=overwrites
-            )
+            match item.type:
+                case "text":
+                    await guild.create_text_channel(
+                        name=item.name, overwrites=overwrites
+                    )
+                case "voice":
+                    await guild.create_voice_channel(
+                        name=item.name, overwrites=overwrites
+                    )
+                case "forum":
+                    await guild.create_forum_channel(
+                        name=item.name, overwrites=overwrites
+                    )
         elif isinstance(item, ChannelCategory):
             category_channel = await guild.create_category(
                 name=item.name, overwrites=overwrites
             )
+
             for channel in item.channels:
-                ch_overwrites = {**overwrites}
+                channel_overwrites = {**overwrites}
+
                 for role, overwrite in channel.overwrites.items():
-                    key = (
-                        guild.default_role
-                        if role.name == "@everyone"
-                        else discord.utils.get(guild.roles, name=role.name)
-                    )
-                    ch_overwrites[key] = overwrite
+                    channel_overwrites[
+                        (
+                            guild.default_role
+                            if role.name == "@everyone"
+                            else discord.utils.get(guild.roles, name=role.name)
+                        )
+                    ] = overwrite
 
                 match channel.type:
                     case "text":
                         await guild.create_text_channel(
                             name=channel.name,
                             category=category_channel,
-                            overwrites=ch_overwrites,
+                            overwrites=channel_overwrites,
                         )
                     case "voice":
                         await guild.create_voice_channel(
                             name=channel.name,
                             category=category_channel,
-                            overwrites=ch_overwrites,
+                            overwrites=channel_overwrites,
                         )
                     case "forum":
                         await guild.create_forum_channel(
                             name=channel.name,
                             category=category_channel,
-                            overwrites=ch_overwrites,
+                            overwrites=channel_overwrites,
                         )
 
 
@@ -80,7 +95,6 @@ class GuildCommands(commands.Cog):
 
     guild = discord.SlashCommandGroup(
         name="guild",
-        description="",
         default_member_permissions=discord.Permissions(administrator=True),
     )
 
@@ -106,10 +120,11 @@ class GuildCommands(commands.Cog):
                 guild.channels, name=hackathon.channels.WELCOME.name
             )
 
-            rules = discord.utils.get(
+            await discord.utils.get(
                 guild.channels, name=hackathon.channels.RULES.name
-            )
-            await rules.send(embed=embeds.RULES)
+            ).send(embed=embeds.RULES)
+        else:
+            return
 
         await guild.default_role.edit(permissions=permissions.EVERYONE)
         await guild.edit(system_channel=welcome_channel)
@@ -119,7 +134,8 @@ class GuildCommands(commands.Cog):
             if member.bot:
                 await member.add_roles(bots_role)
 
-        await ctx.respond("Server was set up!", ephemeral=True)
+        await ctx.edit(content="Server was set up!")
+        logger.info(f"Server was set up in {guild.name} by {ctx.author}")
 
     @guild.command(name="wipe", description="Wipe the server")
     async def wipe(self, ctx: discord.ApplicationContext):
@@ -141,7 +157,7 @@ class GuildCommands(commands.Cog):
             except Exception as e:
                 logger.error(f"Error deleting role {role.name}: {e}")
 
-        await ctx.respond("Server was wiped!", ephemeral=True)
+        logger.info(f"Server was wiped in {guild.name} by {ctx.author}")
 
 
 def setup(bot: commands.Bot):

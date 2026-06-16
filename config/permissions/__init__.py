@@ -5,26 +5,22 @@ from . import overwrites  # noqa: F401
 EVERYONE = discord.Permissions(
     # Membership
     change_nickname=True,
-    # Text
+    # Text Channel
     add_reactions=True,
     use_external_emojis=True,
     read_message_history=True,
 )
 
 BASE = discord.Permissions(
-    # Membership
-    change_nickname=True,
-    # Text
+    # General Server
+    view_channel=True,
+    # Text Channel
     send_messages=True,
     send_messages_in_threads=True,
     create_public_threads=True,
     embed_links=True,
     attach_files=True,
-    add_reactions=True,
-    use_external_emojis=True,
-    use_external_stickers=True,
-    read_message_history=True,
-    # Voice
+    # Voice Channel
     connect=True,
     speak=True,
     stream=True,
@@ -33,43 +29,31 @@ BASE = discord.Permissions(
     use_application_commands=True,
 )
 
-BOARD = discord.Permissions(
+BOARD = BASE | discord.Permissions(
+    # General Server
+    manage_channels=True,
+    manage_roles=True,
+    manage_emojis=True,
+    view_audit_log=True,
     # Membership
-    change_nickname=True,
     manage_nicknames=True,
-    # Text
-    send_messages=True,
-    send_messages_in_threads=True,
-    create_public_threads=True,
-    embed_links=True,
-    attach_files=True,
-    add_reactions=True,
-    use_external_emojis=True,
-    use_external_stickers=True,
-    read_message_history=True,
+    kick_members=True,
+    ban_members=True,
+    moderate_members=True,
+    # Text Channel
     mention_everyone=True,
     manage_messages=True,
     pin_messages=True,
-    send_voice_messages=True,
+    manage_threads=True,
     send_polls=True,
-    # Voice
-    connect=True,
-    speak=True,
-    stream=True,
-    use_voice_activation=True,
+    # Voice Channel
     priority_speaker=True,
     mute_members=True,
     deafen_members=True,
     move_members=True,
     set_voice_channel_status=True,
-    # Server management (channels and expressions only, not roles/permissions)
-    manage_channels=True,
-    view_audit_log=True,
     # Events
     manage_events=True,
-    # Moderation
-    kick_members=True,
-    moderate_members=True,
 )
 
 ADMIN = discord.Permissions(administrator=True)

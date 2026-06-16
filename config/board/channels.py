@@ -1,11 +1,21 @@
-from config import permissions, roles
+from config import board, permissions, roles
 from utils.dataclasses import Channel, ChannelCategory
 
 WELCOME = Channel(
     name="🎉welcome👋",
-    overwrites={roles.EVERYONE: permissions.overwrites.READ_ONLY},
+    overwrites={
+        roles.EVERYONE: permissions.overwrites.VIEW
+        | permissions.overwrites.READ_ONLY
+    },
 )
-INTRODUCTIONS = Channel(name="🗣introductions😎")
+
+INTRODUCTIONS = Channel(
+    name="🗣introductions😎",
+    overwrites={
+        roles.EVERYONE: permissions.overwrites.VIEW
+        | permissions.overwrites.READ_WRITE
+    },
+)
 
 CHANNELS = [
     WELCOME,
@@ -13,9 +23,17 @@ CHANNELS = [
     ChannelCategory(
         name="🗞 Hub 📰",
         channels=[
-            Channel(name="📢announcements🚨", type="text"),
+            Channel(
+                name="📢announcements🚨",
+                type="text",
+                overwrites={roles.BOARD: permissions.overwrites.THREADS_ONLY},
+            ),
             Channel(name="💬general💼", type="text"),
-            Channel(name="🗳️polls📊", type="text"),
+            Channel(
+                name="🗳️polls📊",
+                type="text",
+                overwrites={roles.BOARD: permissions.overwrites.POLLS_ONLY},
+            ),
             Channel(name="💡suggestions📝", type="text"),
             Channel(name="📷photos🎞️", type="text"),
             Channel(name="📚resources🤓", type="text"),
@@ -34,6 +52,10 @@ CHANNELS = [
             Channel(name="💼discussion📈", type="text"),
             Channel(name="💼leads-vc🎧", type="voice"),
         ],
+        overwrites={
+            roles.BOARD: permissions.overwrites.DENY,
+            board.roles.LEAD: permissions.overwrites.VIEW,
+        },
     ),
     ChannelCategory(
         name="💼 Teams 🤝",

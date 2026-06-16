@@ -8,9 +8,6 @@ from . import categories
 SPONSOR = Role(
     name="Sponsor", permissions=permissions.BASE, color="#F8AAFF", hoist=True
 )
-JUDGE = Role(
-    name="Judge", permissions=permissions.BASE, color="#FCA129", hoist=True
-)
 MENTOR = Role(
     name="Mentor", permissions=permissions.BASE, color="#0F218A", hoist=True
 )
@@ -22,7 +19,6 @@ ROLES = [
     roles.DIRECTOR,
     roles.BOARD,
     SPONSOR,
-    JUDGE,
     MENTOR,
     HACKER,
     categories.PERSONAL,

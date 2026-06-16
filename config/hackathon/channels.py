@@ -3,11 +3,18 @@ from utils.dataclasses import Channel, ChannelCategory
 
 WELCOME = Channel(
     name="🎉welcome👋",
-    overwrites={roles.EVERYONE: permissions.overwrites.READ_ONLY},
+    overwrites={
+        roles.EVERYONE: permissions.overwrites.VIEW
+        | permissions.overwrites.READ_ONLY
+    },
 )
+
 RULES = Channel(
     name="📜rules⚖️",
-    overwrites={roles.EVERYONE: permissions.overwrites.READ_ONLY},
+    overwrites={
+        roles.EVERYONE: permissions.overwrites.VIEW
+        | permissions.overwrites.READ_ONLY
+    },
 )
 
 CHANNELS = [
@@ -15,57 +22,29 @@ CHANNELS = [
     RULES,
     Channel(
         name="🗣introductions✨",
-        overwrites={roles.EVERYONE: permissions.overwrites.READ_WRITE},
+        overwrites={
+            roles.EVERYONE: permissions.overwrites.VIEW
+            | permissions.overwrites.READ_WRITE
+        },
     ),
     ChannelCategory(
         name="🗞 Spark Hub 📰",
         channels=[
-            Channel(
-                name="🚨fire🔥",
-                overwrites={
-                    hackathon.roles.SPONSOR: permissions.overwrites.DENY,
-                    hackathon.roles.JUDGE: permissions.overwrites.DENY,
-                    hackathon.roles.MENTOR: permissions.overwrites.DENY,
-                },
-            ),
-            Channel(
-                name="💬board-chat🧠",
-                overwrites={
-                    hackathon.roles.SPONSOR: permissions.overwrites.DENY,
-                    hackathon.roles.JUDGE: permissions.overwrites.DENY,
-                    hackathon.roles.MENTOR: permissions.overwrites.DENY,
-                },
-            ),
+            Channel(name="🚨fire🔥"),
+            Channel(name="💬board-chat🧠"),
             Channel(
                 name="🤝sponsor-chat💼",
                 overwrites={
-                    hackathon.roles.SPONSOR: permissions.overwrites.READ_WRITE,
-                    hackathon.roles.JUDGE: permissions.overwrites.DENY,
-                    hackathon.roles.MENTOR: permissions.overwrites.DENY,
-                },
-            ),
-            Channel(
-                name="⚖️judge-chat🧑‍⚖️",
-                overwrites={
-                    hackathon.roles.SPONSOR: permissions.overwrites.DENY,
-                    hackathon.roles.JUDGE: permissions.overwrites.READ_WRITE,
-                    hackathon.roles.MENTOR: permissions.overwrites.DENY,
+                    hackathon.roles.SPONSOR: permissions.overwrites.VIEW
                 },
             ),
             Channel(
                 name="🧑‍🏫mentor-chat💡",
                 overwrites={
-                    hackathon.roles.SPONSOR: permissions.overwrites.DENY,
-                    hackathon.roles.JUDGE: permissions.overwrites.DENY,
-                    hackathon.roles.MENTOR: permissions.overwrites.READ_WRITE,
+                    hackathon.roles.MENTOR: permissions.overwrites.VIEW
                 },
             ),
         ],
-        overwrites={
-            hackathon.roles.SPONSOR: permissions.overwrites.READ_ONLY,
-            hackathon.roles.JUDGE: permissions.overwrites.READ_ONLY,
-            hackathon.roles.MENTOR: permissions.overwrites.READ_ONLY,
-        },
     ),
     ChannelCategory(
         name="📢 Info Hub 📚",
@@ -74,11 +53,10 @@ CHANNELS = [
             Channel(name="📚resources🤓"),
         ],
         overwrites={
-            hackathon.roles.SPONSOR: permissions.overwrites.READ_ONLY,
-            hackathon.roles.JUDGE: permissions.overwrites.READ_ONLY,
-            hackathon.roles.MENTOR: permissions.overwrites.READ_ONLY,
-            hackathon.roles.HACKER: permissions.overwrites.READ_ONLY,
-            roles.EVERYONE: permissions.overwrites.READ_ONLY,
+            roles.EVERYONE: permissions.overwrites.VIEW
+            | permissions.overwrites.READ_ONLY,
+            roles.BOARD: permissions.overwrites.VIEW
+            | permissions.overwrites.READ_WRITE,
         },
     ),
     ChannelCategory(
@@ -91,10 +69,9 @@ CHANNELS = [
             Channel(name="📷photo-dump🎞️"),
         ],
         overwrites={
-            hackathon.roles.SPONSOR: permissions.overwrites.READ_WRITE,
-            hackathon.roles.JUDGE: permissions.overwrites.READ_WRITE,
-            hackathon.roles.MENTOR: permissions.overwrites.READ_WRITE,
-            hackathon.roles.HACKER: permissions.overwrites.READ_WRITE,
+            hackathon.roles.HACKER: permissions.overwrites.VIEW,
+            hackathon.roles.SPONSOR: permissions.overwrites.VIEW,
+            hackathon.roles.MENTOR: permissions.overwrites.VIEW,
         },
     ),
     ChannelCategory(
@@ -106,10 +83,9 @@ CHANNELS = [
             Channel(name="🧑‍🏫ask-a-mentor💬", type="forum"),
         ],
         overwrites={
-            hackathon.roles.SPONSOR: permissions.overwrites.READ_WRITE,
-            hackathon.roles.JUDGE: permissions.overwrites.READ_WRITE,
-            hackathon.roles.MENTOR: permissions.overwrites.READ_WRITE,
-            hackathon.roles.HACKER: permissions.overwrites.READ_WRITE,
+            hackathon.roles.HACKER: permissions.overwrites.VIEW,
+            hackathon.roles.SPONSOR: permissions.overwrites.VIEW,
+            hackathon.roles.MENTOR: permissions.overwrites.VIEW,
         },
     ),
     ChannelCategory(
@@ -121,16 +97,14 @@ CHANNELS = [
             Channel(name="🧑‍🏫mentor-oh-3🎙️", type="voice"),
         ],
         overwrites={
-            hackathon.roles.SPONSOR: permissions.overwrites.READ_WRITE,
-            hackathon.roles.JUDGE: permissions.overwrites.READ_WRITE,
-            hackathon.roles.MENTOR: permissions.overwrites.READ_WRITE,
-            hackathon.roles.HACKER: permissions.overwrites.READ_WRITE,
+            hackathon.roles.HACKER: permissions.overwrites.VIEW,
+            hackathon.roles.MENTOR: permissions.overwrites.VIEW,
         },
     ),
     ChannelCategory(
         name="🤖 Bots Hub ⚙️",
         channels=[
-            Channel(name="commands"),
+            Channel(name="💬commands🛠️"),
             Channel(name="sys-logs"),
             Channel(name="mod-logs"),
             Channel(name="member-logs"),

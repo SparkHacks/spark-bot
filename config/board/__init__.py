@@ -1,1 +1,1 @@
-from . import channels, roles  # noqa: F401
+from . import roles, channels  # noqa: F401

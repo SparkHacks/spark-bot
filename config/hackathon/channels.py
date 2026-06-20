@@ -17,6 +17,8 @@ RULES = Channel(
     },
 )
 
+SYS_LOGS = Channel(name="🖥️sys-logs⚙️")
+
 CHANNELS = [
     WELCOME,
     RULES,
@@ -105,7 +107,7 @@ CHANNELS = [
         name="🤖 Bots Hub ⚙️",
         channels=[
             Channel(name="💬commands🛠️"),
-            Channel(name="🖥️sys-logs⚙️"),
+            SYS_LOGS,
             Channel(name="🛡️mod-logs🔨"),
             Channel(name="👥member-logs📋"),
             Channel(name="💬message-logs📝"),

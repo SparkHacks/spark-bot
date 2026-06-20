@@ -17,6 +17,8 @@ INTRODUCTIONS = Channel(
     },
 )
 
+LOGS = Channel(name="📊logs📈")
+
 CHANNELS = [
     WELCOME,
     INTRODUCTIONS,
@@ -25,31 +27,29 @@ CHANNELS = [
         channels=[
             Channel(
                 name="📢announcements🚨",
-                type="text",
                 overwrites={roles.BOARD: permissions.overwrites.THREADS_ONLY},
             ),
-            Channel(name="💬general💼", type="text"),
+            Channel(name="💬general💼"),
             Channel(
                 name="🗳️polls📊",
-                type="text",
                 overwrites={roles.BOARD: permissions.overwrites.POLLS_ONLY},
             ),
-            Channel(name="💡suggestions📝", type="text"),
-            Channel(name="📷photos🎞️", type="text"),
-            Channel(name="📚resources🤓", type="text"),
+            Channel(name="💡suggestions📝"),
+            Channel(name="📷photos🎞️"),
+            Channel(name="📚resources🤓"),
         ],
     ),
     ChannelCategory(
         name="🤪 Unserious 🎉",
         channels=[
-            Channel(name="💬yapping🗣️", type="text"),
-            Channel(name="😂memes🗿", type="text"),
+            Channel(name="💬yapping🗣️"),
+            Channel(name="😂memes🗿"),
         ],
     ),
     ChannelCategory(
         name="💪 Leads 👑",
         channels=[
-            Channel(name="💼discussion📈", type="text"),
+            Channel(name="💼discussion📈"),
             Channel(name="💼leads-vc🎧", type="voice"),
         ],
         overwrites={
@@ -60,11 +60,11 @@ CHANNELS = [
     ChannelCategory(
         name="💼 Teams 🤝",
         channels=[
-            Channel(name="💵communications📢", type="text"),
-            Channel(name="💃experience✨", type="text"),
-            Channel(name="📦logistics📈", type="text"),
-            Channel(name="📸outreach🎨", type="text"),
-            Channel(name="💻webdev👾", type="text"),
+            Channel(name="💵communications📢"),
+            Channel(name="💃experience✨"),
+            Channel(name="📦logistics📈"),
+            Channel(name="📸outreach🎨"),
+            Channel(name="💻webdev👾"),
         ],
     ),
     ChannelCategory(
@@ -81,8 +81,8 @@ CHANNELS = [
     ChannelCategory(
         name="🤖 SparkHacks Bot ⚙️",
         channels=[
-            Channel(name="💬commands🛠️", type="text"),
-            Channel(name="📊logs📈", type="text"),
+            Channel(name="💬commands🛠️"),
+            LOGS,
         ],
     ),
 ]

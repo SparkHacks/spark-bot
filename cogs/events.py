@@ -44,7 +44,7 @@ class Events(commands.Cog):
         logger.info(f"{self.bot.user.name} is ready and online!")
         logger.info(
             f"{self.bot.user.name} is connected to guilds: "
-            f"{[guild.name for guild in self.bot.guilds]}"
+            f"{', '.join([guild.name for guild in self.bot.guilds])}"
         )
 
 

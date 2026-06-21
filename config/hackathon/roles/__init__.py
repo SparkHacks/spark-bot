@@ -49,5 +49,4 @@ ROLES = [
     Role(name="Looking for Team", color=colors.LOOKING_FOR_TEAM),
     Role(name="Looking for Members", color=colors.LOOKING_FOR_MEMBERS),
     Role(name="Teamed Up", color=colors.TEAMED_UP),
-    Role(name="Bots", color=colors.BOTS, hoist=True),
 ]

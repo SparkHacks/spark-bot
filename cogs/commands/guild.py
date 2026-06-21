@@ -119,11 +119,6 @@ async def setup_guild(ctx: discord.ApplicationContext):
         )
     )
 
-    bots_role = discord.utils.get(guild.roles, name="Bots")
-    for member in guild.members:
-        if member.bot:
-            await member.add_roles(bots_role)
-
     await discord.utils.get(guild.channels, name=logs_channel.name).send(
         embed=embeds.SETUP_SUCCESS
     )

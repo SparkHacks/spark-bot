@@ -14,5 +14,4 @@ ROLES = [
     Role(name="Outreach", color=colors.OUTREACH, hoist=True),
     Role(name="WebDev", color=colors.WEBDEV, hoist=True),
     roles.BOARD,
-    Role(name="Bots", color=colors.BOTS, hoist=True),
 ]

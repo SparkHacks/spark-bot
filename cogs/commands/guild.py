@@ -127,7 +127,14 @@ async def setup_guild(ctx: discord.ApplicationContext):
     await guild.edit(
         system_channel=discord.utils.get(
             guild.channels, name=welcome_channel.name
-        )
+        ),
+        system_channel_flags=discord.SystemChannelFlags(
+            join_notifications=False,
+            join_notification_replies=False,
+            premium_subscriptions=False,
+            guild_reminder_notifications=False,
+        ),
+        default_notifications=discord.NotificationLevel.only_mentions,
     )
 
     await discord.utils.get(guild.channels, name=logs_channel.name).send(

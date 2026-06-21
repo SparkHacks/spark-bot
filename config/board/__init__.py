@@ -1,1 +1,1 @@
-from config.board import channels, roles  # noqa: F401
+from config.board import roles, channels  # noqa: F401

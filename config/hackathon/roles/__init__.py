@@ -1,6 +1,5 @@
-import discord
-
 from config import permissions, roles
+from static import colors
 from utils.dataclasses import Role
 
 from . import categories
@@ -8,19 +7,19 @@ from . import categories
 SPONSOR = Role(
     name="Sponsor",
     permissions=permissions.BASE,
-    color="#F8AAFF",
+    color=colors.SPONSOR,
     hoist=True,
 )
 MENTOR = Role(
     name="Mentor",
     permissions=permissions.BASE,
-    color="#0F218A",
+    color=colors.MENTOR,
     hoist=True,
 )
 HACKER = Role(
     name="Hacker",
     permissions=permissions.BASE,
-    color="#F1C40F",
+    color=colors.HACKER,
     hoist=True,
 )
 
@@ -31,24 +30,24 @@ ROLES = [
     MENTOR,
     HACKER,
     categories.PERSONAL,
-    Role(name="Freshman", color=discord.Color.teal()),
-    Role(name="Sophomore", color=discord.Color.green()),
-    Role(name="Junior", color=discord.Color.blue()),
-    Role(name="Senior", color=discord.Color.purple()),
-    Role(name="Master", color=discord.Color.fuchsia()),
-    Role(name="He/Him", color="#99AAB5"),
-    Role(name="She/Her", color="#99AAB5"),
-    Role(name="They/Them", color="#99AAB5"),
-    Role(name="Any Pronouns", color="#99AAB5"),
-    Role(name="Ask My Pronouns", color="#99AAB5"),
+    Role(name="Freshman", color=colors.FRESHMAN),
+    Role(name="Sophomore", color=colors.SOPHOMORE),
+    Role(name="Junior", color=colors.JUNIOR),
+    Role(name="Senior", color=colors.SENIOR),
+    Role(name="Master", color=colors.MASTER),
+    Role(name="He/Him", color=colors.PRONOUNS),
+    Role(name="She/Her", color=colors.PRONOUNS),
+    Role(name="They/Them", color=colors.PRONOUNS),
+    Role(name="Any Pronouns", color=colors.PRONOUNS),
+    Role(name="Ask My Pronouns", color=colors.PRONOUNS),
     categories.EXPERIENCE,
-    Role(name="First-Time Hacker", color=discord.Color.green()),
-    Role(name="Experienced Hacker", color=discord.Color.blue()),
-    Role(name="New Attendee", color=discord.Color.purple()),
-    Role(name="Returning Attendee", color=discord.Color.fuchsia()),
+    Role(name="First-Time Hacker", color=colors.FIRST_TIME_HACKER),
+    Role(name="Experienced Hacker", color=colors.EXPERIENCED_HACKER),
+    Role(name="New Attendee", color=colors.NEW_ATTENDEE),
+    Role(name="Returning Attendee", color=colors.RETURNING_ATTENDEE),
     categories.TEAM_STATUS,
-    Role(name="Looking for Team", color=discord.Color.yellow()),
-    Role(name="Looking for Members", color=discord.Color.orange()),
-    Role(name="Teamed Up", color=discord.Color.green()),
-    Role(name="Bots", color="#607D8B", hoist=True),
+    Role(name="Looking for Team", color=colors.LOOKING_FOR_TEAM),
+    Role(name="Looking for Members", color=colors.LOOKING_FOR_MEMBERS),
+    Role(name="Teamed Up", color=colors.TEAMED_UP),
+    Role(name="Bots", color=colors.BOTS, hoist=True),
 ]

@@ -1,5 +1,7 @@
 import discord
 
+from static import colors
+
 SETUP_CONFIRM = discord.Embed(
     description="Server already has roles or channels. Wipe everything and set up from scratch?",
     color=discord.Color.orange(),
@@ -18,7 +20,7 @@ SETUP_SUCCESS = discord.Embed(
 RULES = (
     discord.Embed(
         description="Welcome! Please read and follow these rules to keep the hackathon inclusive, productive, and fun for everyone.\n",
-        color=discord.Color(int("#A5A8C3"[1:], 16)),
+        color=colors.BOT,
     )
     .set_author(name="SparkHacks Rules")
     .add_field(
@@ -73,5 +75,5 @@ def WELCOME(member: discord.Member):
     return discord.Embed(
         title=f"Welcome to {member.guild.name}!",
         description=f"Glad to see you here, {member.mention}!",
-        color=discord.Color(int("#A5A8C3"[1:], 16)),
+        color=colors.BOT,
     )

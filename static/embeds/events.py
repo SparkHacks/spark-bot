@@ -11,6 +11,34 @@ def WELCOME(member: discord.Member):
     )
 
 
+def MEMBER_JOINED(member: discord.Member):
+    return (
+        discord.Embed(
+            description=f"{member.mention} {member.name}",
+            color=discord.Color.green(),
+            timestamp=discord.utils.utcnow(),
+        )
+        .set_author(name="Member Joined", icon_url=member.display_avatar.url)
+        .add_field(
+            name="Account Age",
+            value=discord.utils.format_dt(member.created_at, style="R"),
+        )
+        .set_footer(text=f"ID: {member.id}")
+    )
+
+
+def MEMBER_LEFT(member: discord.Member):
+    return (
+        discord.Embed(
+            description=f"{member.mention} {member.name}",
+            color=discord.Color.red(),
+            timestamp=discord.utils.utcnow(),
+        )
+        .set_author(name="Member Left", icon_url=member.display_avatar.url)
+        .set_footer(text=f"ID: {member.id}")
+    )
+
+
 def ROLE_GIVEN(member: discord.Member, role: discord.Role):
     return (
         discord.Embed(

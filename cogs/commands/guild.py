@@ -118,11 +118,6 @@ async def setup_guild(ctx: discord.ApplicationContext):
                             overwrites=channel_overwrites,
                         )
 
-    if rules_channel:
-        await discord.utils.get(guild.channels, name=rules_channel.name).send(
-            embed=embeds.rules.RULES
-        )
-
     await guild.default_role.edit(permissions=permissions.EVERYONE)
     await guild.edit(
         system_channel=discord.utils.get(
@@ -136,6 +131,11 @@ async def setup_guild(ctx: discord.ApplicationContext):
         ),
         default_notifications=discord.NotificationLevel.only_mentions,
     )
+
+    if rules_channel:
+        await discord.utils.get(guild.channels, name=rules_channel.name).send(
+            embed=embeds.rules.RULES
+        )
 
     await discord.utils.get(guild.channels, name=logs_channel.name).send(
         embed=embeds.commands.SETUP_SUCCESS
@@ -216,8 +216,8 @@ class GuildCommands(commands.Cog):
     async def setup(self, ctx: discord.ApplicationContext):
         await ctx.defer(ephemeral=True)
 
-        # Show a view if there are @everyone and the bot's role
-        # plus the channel where the command is called
+        # Show a view if there are not only @everyone and the bot's role
+        # or is not only the channel where the command is called
         if len(ctx.guild.roles) > 2 or len(ctx.guild.channels) > 1:
             await ctx.edit(
                 embed=embeds.commands.SETUP_CONFIRM, view=WipeView(ctx)

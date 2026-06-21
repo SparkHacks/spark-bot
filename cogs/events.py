@@ -64,13 +64,14 @@ class Events(commands.Cog):
 
         added = set(after.roles) - set(before.roles)
         removed = set(before.roles) - set(after.roles)
-
         if not added and not removed:
             return
 
         logs_channel = discord.utils.get(
             before.guild.channels, name=hackathon.channels.MEMBER_LOGS.name
         )
+        if not logs_channel:
+            return
 
         for role in added:
             await logs_channel.send(

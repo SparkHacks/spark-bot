@@ -67,9 +67,11 @@ async def setup_guild(ctx: discord.ApplicationContext):
                         name=item.name, overwrites=overwrites
                     )
                 case "announcement":
-                    await guild.create_text_channel(
-                        name=item.name, overwrites=overwrites, news=True
-                    )
+                    await (
+                        await guild.create_text_channel(
+                            name=item.name, overwrites=overwrites
+                        )
+                    ).edit(type=discord.ChannelType.news)
                 case "forum":
                     await guild.create_forum_channel(
                         name=item.name, overwrites=overwrites
@@ -105,12 +107,13 @@ async def setup_guild(ctx: discord.ApplicationContext):
                             overwrites=channel_overwrites,
                         )
                     case "announcement":
-                        await guild.create_text_channel(
-                            name=channel.name,
-                            category=category_channel,
-                            overwrites=channel_overwrites,
-                            news=True,
-                        )
+                        await (
+                            await guild.create_text_channel(
+                                name=channel.name,
+                                category=category_channel,
+                                overwrites=channel_overwrites,
+                            )
+                        ).edit(type=discord.ChannelType.news)
                     case "forum":
                         await guild.create_forum_channel(
                             name=channel.name,
@@ -140,7 +143,7 @@ async def setup_guild(ctx: discord.ApplicationContext):
     await discord.utils.get(guild.channels, name=logs_channel.name).send(
         embed=embeds.commands.SETUP_SUCCESS
     )
-    logger.info(f"Server was set up in {guild.name} by {ctx.author}")
+    logger.info(f"{guild.name} server was set up by {ctx.author}")
 
 
 async def wipe_guild(ctx: discord.ApplicationContext):
@@ -158,7 +161,7 @@ async def wipe_guild(ctx: discord.ApplicationContext):
         except Exception as e:
             logger.error(f"Error deleting role {role.name}: {e}")
 
-    logger.info(f"Server was wiped in {ctx.guild.name} by {ctx.author}")
+    logger.info(f"{ctx.guild.name} server was wiped by {ctx.author}")
 
 
 class WipeView(discord.ui.View):

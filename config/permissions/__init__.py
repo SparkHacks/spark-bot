@@ -1,6 +1,6 @@
 import discord
 
-from . import overwrites  # noqa: F401
+from config.permissions import overwrites  # noqa: F401
 
 EVERYONE = discord.Permissions(
     # Membership

@@ -1,8 +1,7 @@
 from config import permissions, roles
+from config.hackathon.roles import categories
 from static import colors
 from utils.dataclasses import Role
-
-from . import categories
 
 SPONSOR = Role(
     name="Sponsor",

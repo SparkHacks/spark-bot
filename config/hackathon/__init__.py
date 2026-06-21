@@ -1,1 +1,1 @@
-from . import roles, channels  # noqa: F401
+from config.hackathon import channels, roles  # noqa: F401

@@ -66,6 +66,10 @@ async def setup_guild(ctx: discord.ApplicationContext):
                     await guild.create_voice_channel(
                         name=item.name, overwrites=overwrites
                     )
+                case "announcement":
+                    await guild.create_text_channel(
+                        name=item.name, overwrites=overwrites, news=True
+                    )
                 case "forum":
                     await guild.create_forum_channel(
                         name=item.name, overwrites=overwrites
@@ -99,6 +103,13 @@ async def setup_guild(ctx: discord.ApplicationContext):
                             name=channel.name,
                             category=category_channel,
                             overwrites=channel_overwrites,
+                        )
+                    case "announcement":
+                        await guild.create_text_channel(
+                            name=channel.name,
+                            category=category_channel,
+                            overwrites=channel_overwrites,
+                            news=True,
                         )
                     case "forum":
                         await guild.create_forum_channel(

@@ -27,6 +27,7 @@ CHANNELS = [
         channels=[
             Channel(
                 name="📢announcements🚨",
+                type="announcement",
                 overwrites={roles.BOARD: permissions.overwrites.THREADS_ONLY},
             ),
             Channel(name="💬general💼"),

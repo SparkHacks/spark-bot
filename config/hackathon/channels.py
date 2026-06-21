@@ -52,7 +52,7 @@ CHANNELS = [
     ChannelCategory(
         name="📢 Info Hub 📚",
         channels=[
-            Channel(name="📢announcements🚨"),
+            Channel(name="📢announcements🚨", type="announcement"),
             Channel(name="📚resources🤓"),
         ],
         overwrites={

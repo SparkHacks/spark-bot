@@ -24,14 +24,14 @@ class RoleCommands(commands.Cog):
         await ctx.defer()
 
         if ctx.guild.me.top_role <= role:
-            await ctx.edit(embed=embeds.ROLE_FORBIDDEN)
+            await ctx.edit(embed=embeds.commands.ROLE_FORBIDDEN)
             return
         if ctx.author.top_role <= role:
-            await ctx.edit(embed=embeds.ROLE_HIERARCHY)
+            await ctx.edit(embed=embeds.commands.ROLE_HIERARCHY)
             return
 
         await member.add_roles(role)
-        await ctx.edit(embed=embeds.ROLE_ADD(member, role))
+        await ctx.edit(embed=embeds.commands.ROLE_ADD(member, role))
 
     @role.command(name="remove", description="Remove a role from a member")
     async def remove(
@@ -43,14 +43,14 @@ class RoleCommands(commands.Cog):
         await ctx.defer()
 
         if ctx.guild.me.top_role <= role:
-            await ctx.edit(embed=embeds.ROLE_FORBIDDEN)
+            await ctx.edit(embed=embeds.commands.ROLE_FORBIDDEN)
             return
         if ctx.author.top_role <= role:
-            await ctx.edit(embed=embeds.ROLE_HIERARCHY)
+            await ctx.edit(embed=embeds.commands.ROLE_HIERARCHY)
             return
 
         await member.remove_roles(role)
-        await ctx.edit(embed=embeds.ROLE_REMOVE(member, role))
+        await ctx.edit(embed=embeds.commands.ROLE_REMOVE(member, role))
 
 
 def setup(bot: commands.Bot):

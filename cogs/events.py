@@ -44,7 +44,9 @@ class Events(commands.Cog):
                 ),
             )
 
-        await member.guild.system_channel.send(embed=embeds.WELCOME(member))
+        await member.guild.system_channel.send(
+            embed=embeds.events.WELCOME(member)
+        )
         logger.info(f"{member} joined {member.guild.name}")
 
     @commands.Cog.listener()
@@ -72,10 +74,14 @@ class Events(commands.Cog):
             return
 
         for role in added:
-            await logs_channel.send(embed=embeds.ROLE_GIVEN(after, role))
+            await logs_channel.send(
+                embed=embeds.events.ROLE_GIVEN(after, role)
+            )
             logger.info(f"{role.name} given to {after} in {before.guild.name}")
         for role in removed:
-            await logs_channel.send(embed=embeds.ROLE_REMOVED_(after, role))
+            await logs_channel.send(
+                embed=embeds.events.ROLE_REMOVED_(after, role)
+            )
             logger.info(
                 f"{role.name} removed from {after} in {before.guild.name}"
             )

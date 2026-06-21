@@ -120,7 +120,7 @@ async def setup_guild(ctx: discord.ApplicationContext):
 
     if rules_channel:
         await discord.utils.get(guild.channels, name=rules_channel.name).send(
-            embed=embeds.RULES
+            embed=embeds.rules.RULES
         )
 
     await guild.default_role.edit(permissions=permissions.EVERYONE)
@@ -138,7 +138,7 @@ async def setup_guild(ctx: discord.ApplicationContext):
     )
 
     await discord.utils.get(guild.channels, name=logs_channel.name).send(
-        embed=embeds.SETUP_SUCCESS
+        embed=embeds.commands.SETUP_SUCCESS
     )
     logger.info(f"Server was set up in {guild.name} by {ctx.author}")
 
@@ -191,13 +191,13 @@ class WipeView(discord.ui.View):
         self, button: discord.ui.Button, interaction: discord.Interaction
     ):
         await interaction.response.edit_message(
-            embed=embeds.SETUP_ABORT, view=None
+            embed=embeds.commands.SETUP_ABORT, view=None
         )
         self.stop()
 
     async def on_timeout(self):
         try:
-            await self.ctx.edit(embed=embeds.SETUP_ABORT, view=None)
+            await self.ctx.edit(embed=embeds.commands.SETUP_ABORT, view=None)
         except discord.NotFound:
             pass
 
@@ -219,7 +219,9 @@ class GuildCommands(commands.Cog):
         # Show a view if there are @everyone and the bot's role
         # plus the channel where the command is called
         if len(ctx.guild.roles) > 2 or len(ctx.guild.channels) > 1:
-            await ctx.edit(embed=embeds.SETUP_CONFIRM, view=WipeView(ctx))
+            await ctx.edit(
+                embed=embeds.commands.SETUP_CONFIRM, view=WipeView(ctx)
+            )
             return
 
         await setup_guild(ctx)

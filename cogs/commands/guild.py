@@ -58,7 +58,7 @@ async def setup_guild(ctx: discord.ApplicationContext):
 
         if isinstance(item, Channel):
             match item.type:
-                case "text":
+                case "text" | "announcement":
                     await guild.create_text_channel(
                         name=item.name, overwrites=overwrites
                     )
@@ -66,12 +66,6 @@ async def setup_guild(ctx: discord.ApplicationContext):
                     await guild.create_voice_channel(
                         name=item.name, overwrites=overwrites
                     )
-                case "announcement":
-                    await (
-                        await guild.create_text_channel(
-                            name=item.name, overwrites=overwrites
-                        )
-                    ).edit(type=discord.ChannelType.news)
                 case "forum":
                     await guild.create_forum_channel(
                         name=item.name, overwrites=overwrites
@@ -94,7 +88,7 @@ async def setup_guild(ctx: discord.ApplicationContext):
                     ] = overwrite
 
                 match channel.type:
-                    case "text":
+                    case "text" | "announcement":
                         await guild.create_text_channel(
                             name=channel.name,
                             category=category_channel,
@@ -106,14 +100,6 @@ async def setup_guild(ctx: discord.ApplicationContext):
                             category=category_channel,
                             overwrites=channel_overwrites,
                         )
-                    case "announcement":
-                        await (
-                            await guild.create_text_channel(
-                                name=channel.name,
-                                category=category_channel,
-                                overwrites=channel_overwrites,
-                            )
-                        ).edit(type=discord.ChannelType.news)
                     case "forum":
                         await guild.create_forum_channel(
                             name=channel.name,

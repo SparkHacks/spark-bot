@@ -195,15 +195,16 @@ class GuildCommands(commands.Cog):
 
     guild = discord.SlashCommandGroup(
         name="guild",
-        description="",
+        description="Manage a guild",
         default_member_permissions=discord.Permissions(administrator=True),
     )
 
-    @guild.command(name="setup", description="Set up the server")
+    @guild.command(name="setup", description="Set up a server")
     async def setup(self, ctx: discord.ApplicationContext):
         await ctx.defer(ephemeral=True)
 
-        # Show a view if there are @everyone and the bot's role plus the channel where the command is called
+        # Show a view if there are @everyone and the bot's role
+        # plus the channel where the command is called
         if len(ctx.guild.roles) > 2 or len(ctx.guild.channels) > 1:
             await ctx.edit(embed=embeds.SETUP_CONFIRM, view=WipeView(ctx))
             return
@@ -211,7 +212,7 @@ class GuildCommands(commands.Cog):
         await setup_guild(ctx)
         await ctx.edit(content="\u200b")
 
-    @guild.command(name="wipe", description="Wipe the server")
+    @guild.command(name="wipe", description="Wipe a server")
     async def wipe(self, ctx: discord.ApplicationContext):
         await ctx.defer(ephemeral=True)
 

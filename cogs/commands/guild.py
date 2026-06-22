@@ -12,16 +12,16 @@ logger = logging.getLogger(__name__)
 
 
 async def setup_guild(ctx: discord.ApplicationContext):
-    guild = ctx.guild
+    logger.info(f"{ctx.guild.name} server setup started by {ctx.author}")
 
-    if is_board_guild(guild.name):
+    if is_board_guild(ctx.guild.name):
         roles = board.roles.ROLES
         channels = board.channels.CHANNELS
 
         welcome_channel = board.channels.WELCOME
         logs_channel = board.channels.LOGS
         rules_channel = None
-    elif is_hackathon_guild(guild.name):
+    elif is_hackathon_guild(ctx.guild.name):
         roles = hackathon.roles.ROLES
         channels = hackathon.channels.CHANNELS
 
@@ -32,7 +32,7 @@ async def setup_guild(ctx: discord.ApplicationContext):
         return
 
     for role in roles:
-        await guild.create_role(
+        await ctx.guild.create_role(
             name=role.name,
             permissions=role.permissions,
             color=role.color,
@@ -41,37 +41,38 @@ async def setup_guild(ctx: discord.ApplicationContext):
 
     for item in channels:
         overwrites = {
-            guild.default_role: permissions.overwrites.DENY,
+            ctx.guild.default_role: permissions.overwrites.DENY,
             discord.utils.get(
-                guild.roles, name="Board"
+                ctx.guild.roles, name="Board"
             ): permissions.overwrites.VIEW,
         }
 
         for role, overwrite in item.overwrites.items():
             overwrites[
                 (
-                    guild.default_role
+                    ctx.guild.default_role
                     if role.name == "@everyone"
-                    else discord.utils.get(guild.roles, name=role.name)
+                    else discord.utils.get(ctx.guild.roles, name=role.name)
                 )
             ] = overwrite
 
         if isinstance(item, Channel):
             match item.type:
                 case "text" | "announcement":
-                    await guild.create_text_channel(
+                    await ctx.guild.create_text_channel(
                         name=item.name, overwrites=overwrites
                     )
                 case "voice":
-                    await guild.create_voice_channel(
+                    await ctx.guild.create_voice_channel(
                         name=item.name, overwrites=overwrites
                     )
                 case "forum":
-                    await guild.create_forum_channel(
+                    await ctx.guild.create_forum_channel(
                         name=item.name, overwrites=overwrites
                     )
+
         elif isinstance(item, ChannelCategory):
-            category_channel = await guild.create_category(
+            category_channel = await ctx.guild.create_category(
                 name=item.name, overwrites=overwrites
             )
 
@@ -81,36 +82,38 @@ async def setup_guild(ctx: discord.ApplicationContext):
                 for role, overwrite in channel.overwrites.items():
                     channel_overwrites[
                         (
-                            guild.default_role
+                            ctx.guild.default_role
                             if role.name == "@everyone"
-                            else discord.utils.get(guild.roles, name=role.name)
+                            else discord.utils.get(
+                                ctx.guild.roles, name=role.name
+                            )
                         )
                     ] = overwrite
 
                 match channel.type:
                     case "text" | "announcement":
-                        await guild.create_text_channel(
+                        await ctx.guild.create_text_channel(
                             name=channel.name,
                             category=category_channel,
                             overwrites=channel_overwrites,
                         )
                     case "voice":
-                        await guild.create_voice_channel(
+                        await ctx.guild.create_voice_channel(
                             name=channel.name,
                             category=category_channel,
                             overwrites=channel_overwrites,
                         )
                     case "forum":
-                        await guild.create_forum_channel(
+                        await ctx.guild.create_forum_channel(
                             name=channel.name,
                             category=category_channel,
                             overwrites=channel_overwrites,
                         )
 
-    await guild.default_role.edit(permissions=permissions.EVERYONE)
-    await guild.edit(
+    await ctx.guild.default_role.edit(permissions=permissions.EVERYONE)
+    await ctx.guild.edit(
         system_channel=discord.utils.get(
-            guild.channels, name=welcome_channel.name
+            ctx.guild.channels, name=welcome_channel.name
         ),
         system_channel_flags=discord.SystemChannelFlags(
             join_notifications=False,
@@ -122,17 +125,20 @@ async def setup_guild(ctx: discord.ApplicationContext):
     )
 
     if rules_channel:
-        await discord.utils.get(guild.channels, name=rules_channel.name).send(
-            embed=embeds.rules.RULES
-        )
+        await discord.utils.get(
+            ctx.guild.channels, name=rules_channel.name
+        ).send(embed=embeds.rules.RULES)
 
-    await discord.utils.get(guild.channels, name=logs_channel.name).send(
+    await discord.utils.get(ctx.guild.channels, name=logs_channel.name).send(
         embed=embeds.commands.SETUP_SUCCESS
     )
-    logger.info(f"{guild.name} server was set up by {ctx.author}")
+
+    logger.info(f"{ctx.guild.name} server was set up by {ctx.author}")
 
 
 async def wipe_guild(ctx: discord.ApplicationContext):
+    logger.info(f"{ctx.guild.name} server wipe started by {ctx.author}")
+
     for channel in ctx.guild.channels:
         try:
             await channel.delete()

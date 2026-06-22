@@ -9,12 +9,14 @@ SPONSOR = Role(
     color=colors.SPONSOR,
     hoist=True,
 )
+
 MENTOR = Role(
     name="Mentor",
     permissions=permissions.BASE,
     color=colors.MENTOR,
     hoist=True,
 )
+
 HACKER = Role(
     name="Hacker",
     permissions=permissions.BASE,
@@ -25,7 +27,14 @@ HACKER = Role(
 ROLES = [
     roles.DIRECTOR,
     roles.BOARD,
+    roles.BOTDEV,
     SPONSOR,
+    Role(
+        name="Judge",
+        permissions=permissions.BASE,
+        color=colors.JUDGE,
+        hoist=True,
+    ),
     MENTOR,
     HACKER,
     categories.PERSONAL,
@@ -34,6 +43,8 @@ ROLES = [
     Role(name="Junior", color=colors.JUNIOR),
     Role(name="Senior", color=colors.SENIOR),
     Role(name="Master", color=colors.MASTER),
+    Role(name="PhD", color=colors.PHD),
+    Role(name="Alumni", color=colors.ALUMNI),
     Role(name="He/Him", color=colors.PRONOUNS),
     Role(name="She/Her", color=colors.PRONOUNS),
     Role(name="They/Them", color=colors.PRONOUNS),
@@ -44,6 +55,7 @@ ROLES = [
     Role(name="Experienced Hacker", color=colors.EXPERIENCED_HACKER),
     Role(name="New Attendee", color=colors.NEW_ATTENDEE),
     Role(name="Returning Attendee", color=colors.RETURNING_ATTENDEE),
+    Role(name="Board Alumni", color=colors.BOARD_ALUMNI),
     categories.TEAM_STATUS,
     Role(name="Looking for Team", color=colors.LOOKING_FOR_TEAM),
     Role(name="Looking for Members", color=colors.LOOKING_FOR_MEMBERS),

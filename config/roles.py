@@ -11,10 +11,11 @@ BOARD = Role(
     hoist=True,
 )
 
-ALUMNI = Role(
-    name="Alumni",
+BOTDEV = Role(
+    name="BotDev",
     permissions=permissions.ADMIN,
-    color=colors.ALUMNI,
+    color=colors.BOTDEV,
+    hoist=True,
 )
 
 DIRECTOR = Role(

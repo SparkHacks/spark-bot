@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from typing import Union
 
 import discord
 
@@ -8,14 +7,9 @@ import discord
 class Role:
     name: str
     permissions: discord.Permissions = discord.Permissions.none()
-    color: Union[discord.Color, str] = "#FFFFFF"
+    color: discord.Color = discord.Color.default()
     hoist: bool = False
-
-    def __post_init__(self):
-        if isinstance(self.color, str):
-            object.__setattr__(
-                self, "color", discord.Color(int(self.color[1:], 16))
-            )
+    mentionable: bool = False
 
 
 @dataclass(frozen=True)

@@ -9,6 +9,7 @@ BOARD = Role(
     permissions=permissions.BOARD,
     color=colors.BOARD,
     hoist=True,
+    mentionable=True,
 )
 
 BOTDEV = Role(

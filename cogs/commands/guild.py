@@ -37,6 +37,7 @@ async def setup_guild(ctx: discord.ApplicationContext):
             permissions=role.permissions,
             color=role.color,
             hoist=role.hoist,
+            mentionable=role.mentionable,
         )
 
     for item in channels:

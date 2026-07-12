@@ -4,6 +4,8 @@ from utils.dataclasses import Role
 
 EVERYONE = Role(name="@everyone")
 
+BOTS = Role(name="Bots", color=colors.BOTS, hoist=True)
+
 BOARD = Role(
     name="Board",
     permissions=permissions.BOARD,

@@ -37,6 +37,7 @@ ROLES = [
     ),
     MENTOR,
     HACKER,
+    roles.BOTS,
     categories.PERSONAL,
     Role(name="Freshman", color=colors.FRESHMAN),
     Role(name="Sophomore", color=colors.SOPHOMORE),

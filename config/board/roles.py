@@ -15,4 +15,5 @@ ROLES = [
     Role(name="Media", color=colors.MEDIA, hoist=True),
     Role(name="WebDev", color=colors.WEBDEV, hoist=True),
     roles.BOARD,
+    roles.BOTS,
 ]

@@ -136,6 +136,10 @@ async def setup_guild(ctx: discord.ApplicationContext):
         embed=embeds.commands.SETUP_SUCCESS
     )
 
+    await ctx.guild.me.add_roles(
+        discord.utils.get(ctx.guild.roles, name=roles.BOTS.name)
+    )
+
     logger.info(f"{ctx.guild.name} server was set up by {ctx.author}")
 
 

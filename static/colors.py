@@ -1,6 +1,8 @@
 import discord
 
+# Roles - Bots
 BOT = discord.Color(0xA5A8C3)
+BOTS = discord.Color(0x607D8B)
 
 # Roles - Board
 DIRECTOR = discord.Color(0xD4AF37)

@@ -75,26 +75,39 @@ class Events(commands.Cog):
         else:
             return
 
-        added = set(after.roles) - set(before.roles)
-        removed = set(before.roles) - set(after.roles)
-        if not added and not removed:
-            return
-
         logs_channel = discord.utils.get(
             before.guild.channels, name=logs_channel_name
         )
+
+        if before.nick != after.nick:
+            before_nick = before.nick or before.name
+            after_nick = after.nick or after.name
+
+            await logs_channel.send(
+                embed=embeds.events.NICKNAME_CHANGED(
+                    after, before_nick, after_nick
+                )
+            )
+            logger.info(
+                f"{after} changed nickname from {before_nick} to {after_nick} in {before.guild.name}"
+            )
+
+        added = set(after.roles) - set(before.roles)
+        removed = set(before.roles) - set(after.roles)
 
         for role in added:
             await logs_channel.send(
                 embed=embeds.events.ROLE_GIVEN(after, role)
             )
-            logger.info(f"{role.name} given to {after} in {before.guild.name}")
+            logger.info(
+                f"Role {role.name} given to {after} in {before.guild.name}"
+            )
         for role in removed:
             await logs_channel.send(
                 embed=embeds.events.ROLE_REMOVED_(after, role)
             )
             logger.info(
-                f"{role.name} removed from {after} in {before.guild.name}"
+                f"Role {role.name} removed from {after} in {before.guild.name}"
             )
 
     @commands.Cog.listener()

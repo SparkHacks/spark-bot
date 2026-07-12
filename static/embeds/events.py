@@ -22,7 +22,10 @@ def WELCOME(member: discord.Member):
 
     return discord.Embed(
         title=f"Welcome to {member.guild.name}!",
-        description=f"{random.choice(WELCOME_TEXTS).format(mention=member.mention)}! Head over to {introduction_channel.mention} and say hi!",
+        description=(
+            f"{random.choice(WELCOME_TEXTS).format(mention=member.mention)}! "
+            f"Head over to {introduction_channel.mention} and say hi!"
+        ),
         color=colors.BOT,
     )
 
@@ -53,6 +56,22 @@ def MEMBER_LEFT(member: discord.Member):
         )
         .set_author(name="Member Left", icon_url=member.display_avatar.url)
         .set_thumbnail(url=member.display_avatar.url)
+        .set_footer(text=f"ID: {member.id}")
+    )
+
+
+def NICKNAME_CHANGED(
+    member: discord.Member, before_nick: str, after_nick: str
+):
+    return (
+        discord.Embed(
+            description=f"{member.mention} nickname changed",
+            color=colors.BOT,
+            timestamp=discord.utils.utcnow(),
+        )
+        .set_author(name=member.name, icon_url=member.display_avatar.url)
+        .add_field(name="Before", value=before_nick)
+        .add_field(name="After", value=after_nick)
         .set_footer(text=f"ID: {member.id}")
     )
 

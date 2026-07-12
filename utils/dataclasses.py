@@ -18,6 +18,7 @@ class RoleCategory:
     permissions: discord.Permissions = discord.Permissions.none()
     color: discord.Color = discord.Color(int("292B2F", 16))
     hoist: bool = False
+    mentionable: bool = False
 
     def __post_init__(self):
         object.__setattr__(

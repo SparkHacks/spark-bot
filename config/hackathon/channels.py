@@ -20,6 +20,7 @@ RULES = Channel(
 SYS_LOGS = Channel(name="🖥️sys-logs⚙️")
 GATEWAY_LOGS = Channel(name="🚪gateway-logs🔑")
 MEMBER_LOGS = Channel(name="👥member-logs📋")
+MESSAGE_LOGS = Channel(name="💬message-logs📝")
 
 CHANNELS = [
     WELCOME,
@@ -113,7 +114,7 @@ CHANNELS = [
             Channel(name="🛡️mod-logs🔨"),
             GATEWAY_LOGS,
             MEMBER_LOGS,
-            Channel(name="💬message-logs📝"),
+            MESSAGE_LOGS,
             Channel(name="🗄️server-logs📜"),
         ],
     ),

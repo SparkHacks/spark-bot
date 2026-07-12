@@ -90,7 +90,7 @@ def ROLE_GIVEN(member: discord.Member, role: discord.Role):
     )
 
 
-def ROLE_REMOVED_(member: discord.Member, role: discord.Role):
+def ROLE_REMOVED(member: discord.Member, role: discord.Role):
     return (
         discord.Embed(
             description=f"{member.mention} was removed from the {role.mention} role",
@@ -101,4 +101,40 @@ def ROLE_REMOVED_(member: discord.Member, role: discord.Role):
             name=member.display_name, icon_url=member.display_avatar.url
         )
         .set_footer(text=f"ID: {member.id}")
+    )
+
+
+def MESSAGE_DELETED(message: discord.Message):
+    return (
+        discord.Embed(
+            description=(
+                f"Message sent by {message.author.mention} deleted in {message.channel.mention}\n"
+                f"{message.content or '*No text content*'}"
+            ),
+            color=discord.Color.red(),
+            timestamp=discord.utils.utcnow(),
+        )
+        .set_author(
+            name=message.author.name,
+            icon_url=message.author.display_avatar.url,
+        )
+        .set_footer(
+            text=f"User ID: {message.author.id} • Message ID: {message.id}"
+        )
+    )
+
+
+def MESSAGE_EDITED(before: discord.Message, after: discord.Message):
+    return (
+        discord.Embed(
+            description=f"Message edited in {after.channel.mention} [Jump to Message]({after.jump_url})",
+            color=colors.BOT,
+            timestamp=discord.utils.utcnow(),
+        )
+        .set_author(
+            name=after.author.name, icon_url=after.author.display_avatar.url
+        )
+        .add_field(name="Before", value=before.content or "*No text content*")
+        .add_field(name="After", value=after.content or "*No text content*")
+        .set_footer(text=f"User ID: {after.author.id}")
     )

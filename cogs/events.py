@@ -104,7 +104,7 @@ class Events(commands.Cog):
             )
         for role in removed:
             await logs_channel.send(
-                embed=embeds.events.ROLE_REMOVED_(after, role)
+                embed=embeds.events.ROLE_REMOVED(after, role)
             )
             logger.info(
                 f"Role {role.name} removed from {after} in {before.guild.name}"
@@ -126,6 +126,56 @@ class Events(commands.Cog):
         ).send(embed=embeds.events.MEMBER_LEFT(member))
 
         logger.info(f"{member} left {member.guild.name}")
+
+    @commands.Cog.listener()
+    async def on_message_delete(self, message: discord.Message):
+        if message.author.bot or not message.guild:
+            return
+
+        guild_type = get_guild_type(message.guild.name)
+
+        if guild_type == GuildType.BOARD:
+            logs_channel_name = board.channels.LOGS.name
+        elif guild_type == GuildType.HACKATHON:
+            logs_channel_name = hackathon.channels.MESSAGE_LOGS.name
+        else:
+            return
+
+        await discord.utils.get(
+            message.guild.channels, name=logs_channel_name
+        ).send(embed=embeds.events.MESSAGE_DELETED(message))
+
+        logger.info(
+            f"Message by {message.author} deleted in {message.channel} channel in {message.guild.name}"
+        )
+
+    @commands.Cog.listener()
+    async def on_message_edit(
+        self, before: discord.Message, after: discord.Message
+    ):
+        if (
+            after.author.bot
+            or not after.guild
+            or before.content == after.content
+        ):
+            return
+
+        guild_type = get_guild_type(after.guild.name)
+
+        if guild_type == GuildType.BOARD:
+            logs_channel_name = board.channels.LOGS.name
+        elif guild_type == GuildType.HACKATHON:
+            logs_channel_name = hackathon.channels.MESSAGE_LOGS.name
+        else:
+            return
+
+        await discord.utils.get(
+            after.guild.channels, name=logs_channel_name
+        ).send(embed=embeds.events.MESSAGE_EDITED(before, after))
+
+        logger.info(
+            f"Message by {after.author} edited in {after.channel} channel in {after.guild.name}"
+        )
 
 
 def setup(bot: commands.Bot):

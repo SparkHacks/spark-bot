@@ -1,9 +1,17 @@
 import re
+from enum import Enum, auto
 
 
-def is_board_guild(name: str) -> bool:
-    return bool(re.match(r"^SparkHacks \d{4} Board$", name))
+class GuildType(Enum):
+    BOARD = auto()
+    HACKATHON = auto()
+    UNKNOWN = auto()
 
 
-def is_hackathon_guild(name: str) -> bool:
-    return bool(re.match(r"^SparkHacks \d{4}$", name))
+def get_guild_type(name: str) -> GuildType:
+    if re.match(r"^SparkHacks \d{4} Board$", name):
+        return GuildType.BOARD
+    elif re.match(r"^SparkHacks \d{4}$", name):
+        return GuildType.HACKATHON
+    else:
+        return GuildType.UNKNOWN

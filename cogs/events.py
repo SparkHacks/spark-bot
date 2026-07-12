@@ -5,7 +5,7 @@ from discord.ext import commands
 
 from config import board, hackathon, roles
 from static import embeds
-from utils.guilds import is_board_guild, is_hackathon_guild
+from utils.guilds import GuildType, get_guild_type
 
 logger = logging.getLogger(__name__)
 
@@ -24,16 +24,14 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
-        if is_board_guild(member.guild.name):
+        guild_type = get_guild_type(member.guild.name)
+
+        if guild_type == GuildType.BOARD:
             await member.add_roles(
                 discord.utils.get(member.guild.roles, name=roles.BOARD.name)
             )
-
-            await discord.utils.get(
-                member.guild.channels, name=board.channels.LOGS.name
-            ).send(embed=embeds.events.MEMBER_JOINED(member))
-
-        elif is_hackathon_guild(member.guild.name):
+            logs_channel_name = board.channels.LOGS.name
+        elif guild_type == GuildType.HACKATHON:
             await member.add_roles(
                 discord.utils.get(
                     member.guild.roles,
@@ -48,16 +46,19 @@ class Events(commands.Cog):
                     name=hackathon.roles.categories.TEAM_STATUS.name,
                 ),
             )
-
-            await discord.utils.get(
-                member.guild.channels,
-                name=hackathon.channels.GATEWAY_LOGS.name,
-            ).send(embed=embeds.events.MEMBER_JOINED(member))
+            logs_channel_name = hackathon.channels.GATEWAY_LOGS.name
+        else:
+            return
 
         await member.guild.system_channel.send(
             embed=embeds.events.WELCOME(member),
             allowed_mentions=discord.AllowedMentions(users=True),
         )
+
+        await discord.utils.get(
+            member.guild.channels,
+            name=logs_channel_name,
+        ).send(embed=embeds.events.MEMBER_JOINED(member))
 
         logger.info(f"{member} joined {member.guild.name}")
 
@@ -65,16 +66,18 @@ class Events(commands.Cog):
     async def on_member_update(
         self, before: discord.Member, after: discord.Member
     ):
+        guild_type = get_guild_type(before.guild.name)
+
+        if guild_type == GuildType.BOARD:
+            logs_channel_name = board.channels.LOGS.name
+        elif guild_type == GuildType.HACKATHON:
+            logs_channel_name = hackathon.channels.MEMBER_LOGS.name
+        else:
+            return
+
         added = set(after.roles) - set(before.roles)
         removed = set(before.roles) - set(after.roles)
         if not added and not removed:
-            return
-
-        if is_board_guild(before.guild.name):
-            logs_channel_name = board.channels.LOGS.name
-        elif is_hackathon_guild(before.guild.name):
-            logs_channel_name = hackathon.channels.MEMBER_LOGS.name
-        else:
             return
 
         logs_channel = discord.utils.get(
@@ -96,9 +99,11 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_remove(self, member: discord.Member):
-        if is_board_guild(member.guild.name):
+        guild_type = get_guild_type(member.guild.name)
+
+        if guild_type == GuildType.BOARD:
             logs_channel_name = board.channels.LOGS.name
-        elif is_hackathon_guild(member.guild.name):
+        elif guild_type == GuildType.HACKATHON:
             logs_channel_name = hackathon.channels.GATEWAY_LOGS.name
         else:
             return

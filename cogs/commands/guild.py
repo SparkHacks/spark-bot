@@ -6,7 +6,7 @@ from discord.ext import commands
 from config import board, hackathon, permissions
 from static import embeds
 from utils.dataclasses import Channel, ChannelCategory
-from utils.guilds import is_board_guild, is_hackathon_guild
+from utils.guilds import GuildType, get_guild_type
 
 logger = logging.getLogger(__name__)
 
@@ -14,14 +14,16 @@ logger = logging.getLogger(__name__)
 async def setup_guild(ctx: discord.ApplicationContext):
     logger.info(f"{ctx.guild.name} server setup started by {ctx.author}")
 
-    if is_board_guild(ctx.guild.name):
+    guild_type = get_guild_type(ctx.guild.name)
+
+    if guild_type == GuildType.BOARD:
         roles = board.roles.ROLES
         channels = board.channels.CHANNELS
 
         welcome_channel = board.channels.WELCOME
         logs_channel = board.channels.LOGS
         rules_channel = None
-    elif is_hackathon_guild(ctx.guild.name):
+    elif guild_type == GuildType.HACKATHON:
         roles = hackathon.roles.ROLES
         channels = hackathon.channels.CHANNELS
 

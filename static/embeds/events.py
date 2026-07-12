@@ -1,12 +1,28 @@
+import random
+
 import discord
 
 from static import colors
 
+WELCOME_TEXTS = [
+    "{mention} just landed",
+    "{mention} just showed up",
+    "{mention} joined the party",
+    "{mention} is here",
+    "Good to see you, {mention}",
+    "Glad you're here, {mention}",
+    "Yay you made it, {mention}",
+]
+
 
 def WELCOME(member: discord.Member):
+    introduction_channel = discord.utils.find(
+        lambda channel: "introductions" in channel.name, member.guild.channels
+    )
+
     return discord.Embed(
         title=f"Welcome to {member.guild.name}!",
-        description=f"Glad to see you here, {member.mention}!",
+        description=f"{random.choice(WELCOME_TEXTS).format(mention=member.mention)}! Head over to {introduction_channel.mention} and say hi!",
         color=colors.BOT,
     )
 
@@ -19,8 +35,9 @@ def MEMBER_JOINED(member: discord.Member):
             timestamp=discord.utils.utcnow(),
         )
         .set_author(name="Member Joined", icon_url=member.display_avatar.url)
+        .set_thumbnail(url=member.display_avatar.url)
         .add_field(
-            name="Account Age",
+            name="Account Created",
             value=discord.utils.format_dt(member.created_at, style="R"),
         )
         .set_footer(text=f"ID: {member.id}")
@@ -35,6 +52,7 @@ def MEMBER_LEFT(member: discord.Member):
             timestamp=discord.utils.utcnow(),
         )
         .set_author(name="Member Left", icon_url=member.display_avatar.url)
+        .set_thumbnail(url=member.display_avatar.url)
         .set_footer(text=f"ID: {member.id}")
     )
 

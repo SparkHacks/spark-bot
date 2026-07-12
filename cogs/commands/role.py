@@ -1,7 +1,11 @@
+import logging
+
 import discord
 from discord.ext import commands
 
 from static import embeds
+
+logger = logging.getLogger(__name__)
 
 
 class RoleCommands(commands.Cog):
@@ -32,6 +36,9 @@ class RoleCommands(commands.Cog):
 
         await member.add_roles(role)
         await ctx.edit(embed=embeds.commands.ROLE_ADD(member, role))
+        logger.info(
+            f"Role {role.name} added to {member} by {ctx.author} in {ctx.guild.name}"
+        )
 
     @role.command(name="remove", description="Remove a role from a member")
     async def remove(
@@ -51,6 +58,9 @@ class RoleCommands(commands.Cog):
 
         await member.remove_roles(role)
         await ctx.edit(embed=embeds.commands.ROLE_REMOVE(member, role))
+        logger.info(
+            f"Role {role.name} removed from {member} by {ctx.author} in {ctx.guild.name}"
+        )
 
 
 def setup(bot: commands.Bot):

@@ -18,14 +18,14 @@ SETUP_SUCCESS = discord.Embed(
 
 def ROLE_ADD(member: discord.Member, role: discord.Role):
     return discord.Embed(
-        description=f"Added {role.mention} to {member.mention}",
+        description=f"Added role {role.mention} to {member.mention}",
         color=discord.Color.green(),
     )
 
 
 def ROLE_REMOVE(member: discord.Member, role: discord.Role):
     return discord.Embed(
-        description=f"Removed {role.mention} from {member.mention}",
+        description=f"Removed role {role.mention} from {member.mention}",
         color=discord.Color.red(),
     )
 

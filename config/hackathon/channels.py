@@ -111,7 +111,6 @@ CHANNELS = [
             GATEWAY_LOGS,
             MEMBER_LOGS,
             MESSAGE_LOGS,
-            Channel(name="🗄️server-logs📜"),
         ],
     ),
 ]

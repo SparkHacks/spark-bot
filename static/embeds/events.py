@@ -160,7 +160,7 @@ def MESSAGE_DELETED(message: discord.Message):
 def MESSAGE_EDITED(before: discord.Message, after: discord.Message):
     return (
         discord.Embed(
-            description=f"Message edited in {after.channel.mention} [Jump to Message]({after.jump_url})",
+            description=f"[Message]({after.jump_url} edited in {after.channel.mention})",
             color=colors.BOT,
             timestamp=discord.utils.utcnow(),
         )

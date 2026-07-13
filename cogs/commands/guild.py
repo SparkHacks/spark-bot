@@ -6,7 +6,8 @@ from discord.ext import commands
 from config import board, hackathon, permissions
 from static import embeds
 from utils.dataclasses import Channel, ChannelCategory
-from utils.guilds import GuildType, get_guild_type
+from utils.enums import GuildType
+from utils.guilds import get_guild_type
 
 logger = logging.getLogger(__name__)
 
@@ -14,24 +15,20 @@ logger = logging.getLogger(__name__)
 async def setup_guild(ctx: discord.ApplicationContext):
     logger.info(f"{ctx.guild.name} server setup started by {ctx.author}")
 
-    guild_type = get_guild_type(ctx.guild.name)
-
-    if guild_type == GuildType.BOARD:
+    if get_guild_type(ctx.guild.name) == GuildType.BOARD:
         roles = board.roles.ROLES
         channels = board.channels.CHANNELS
 
         welcome_channel = board.channels.WELCOME
         logs_channel = board.channels.LOGS
         rules_channel = None
-    elif guild_type == GuildType.HACKATHON:
+    else:
         roles = hackathon.roles.ROLES
         channels = hackathon.channels.CHANNELS
 
         welcome_channel = hackathon.channels.WELCOME
         logs_channel = hackathon.channels.SYS_LOGS
         rules_channel = hackathon.channels.RULES
-    else:
-        return
 
     for role in roles:
         await ctx.guild.create_role(
@@ -87,9 +84,7 @@ async def setup_guild(ctx: discord.ApplicationContext):
                         (
                             ctx.guild.default_role
                             if role.name == "@everyone"
-                            else discord.utils.get(
-                                ctx.guild.roles, name=role.name
-                            )
+                            else discord.utils.get(ctx.guild.roles, name=role.name)
                         )
                     ] = overwrite
 
@@ -115,9 +110,7 @@ async def setup_guild(ctx: discord.ApplicationContext):
 
     await ctx.guild.default_role.edit(permissions=permissions.EVERYONE)
     await ctx.guild.edit(
-        system_channel=discord.utils.get(
-            ctx.guild.channels, name=welcome_channel.name
-        ),
+        system_channel=discord.utils.get(ctx.guild.channels, name=welcome_channel.name),
         system_channel_flags=discord.SystemChannelFlags(
             join_notifications=False,
             join_notification_replies=False,
@@ -128,9 +121,9 @@ async def setup_guild(ctx: discord.ApplicationContext):
     )
 
     if rules_channel:
-        await discord.utils.get(
-            ctx.guild.channels, name=rules_channel.name
-        ).send(embed=embeds.rules.RULES)
+        await discord.utils.get(ctx.guild.channels, name=rules_channel.name).send(
+            embed=embeds.rules.RULES
+        )
 
     await discord.utils.get(ctx.guild.channels, name=logs_channel.name).send(
         embed=embeds.commands.SETUP_SUCCESS
@@ -168,9 +161,7 @@ class WipeView(discord.ui.View):
         super().__init__(timeout=30)
         self.ctx = ctx
 
-    async def interaction_check(
-        self, interaction: discord.Interaction
-    ) -> bool:
+    async def interaction_check(self, interaction: discord.Interaction) -> bool:
         return interaction.user.id == self.ctx.author.id
 
     @discord.ui.button(label="Wipe & Setup", style=discord.ButtonStyle.danger)
@@ -189,9 +180,7 @@ class WipeView(discord.ui.View):
         self.stop()
 
     @discord.ui.button(label="Abort", style=discord.ButtonStyle.secondary)
-    async def abort(
-        self, button: discord.ui.Button, interaction: discord.Interaction
-    ):
+    async def abort(self, button: discord.ui.Button, interaction: discord.Interaction):
         await interaction.response.edit_message(
             embed=embeds.commands.SETUP_ABORT, view=None
         )
@@ -221,9 +210,7 @@ class GuildCommands(commands.Cog):
         # Show a view if there are not only @everyone and the bot's role
         # or is not only the channel where the command is called
         if len(ctx.guild.roles) > 2 or len(ctx.guild.channels) > 1:
-            await ctx.edit(
-                embed=embeds.commands.SETUP_CONFIRM, view=WipeView(ctx)
-            )
+            await ctx.edit(embed=embeds.commands.SETUP_CONFIRM, view=WipeView(ctx))
             return
 
         await setup_guild(ctx)

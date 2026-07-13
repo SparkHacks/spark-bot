@@ -1,5 +1,6 @@
 import discord
 
+# Guild commands
 SETUP_CONFIRM = discord.Embed(
     description="Server already has roles or channels. Wipe everything and set up from scratch?",
     color=discord.Color.orange(),
@@ -16,6 +17,53 @@ SETUP_SUCCESS = discord.Embed(
 )
 
 
+# Mod commands
+def MOD_BAN(member: discord.Member):
+    return discord.Embed(
+        description=f"{member.mention} has been banned.",
+        color=discord.Color.red(),
+    )
+
+
+def MOD_UNBAN(user: discord.User):
+    return discord.Embed(
+        description=f"{user.mention} has been unbanned.",
+        color=discord.Color.green(),
+    )
+
+
+def MOD_KICK(member: discord.Member):
+    return discord.Embed(
+        description=f"{member.mention} has been kicked.",
+        color=discord.Color.red(),
+    )
+
+
+__DURATION_LABELS = {
+    60: "60 seconds",
+    300: "5 minutes",
+    600: "10 minutes",
+    3600: "1 hour",
+    86400: "1 day",
+    604800: "1 week",
+}
+
+
+def MOD_MUTE(member: discord.Member, duration: int):
+    return discord.Embed(
+        description=f"{member.mention} has been muted for {__DURATION_LABELS[duration]}.",
+        color=discord.Color.red(),
+    )
+
+
+def MOD_UNMUTE(member: discord.Member):
+    return discord.Embed(
+        description=f"{member.mention} has been unmuted.",
+        color=discord.Color.green(),
+    )
+
+
+# Role commands
 def ROLE_ADD(member: discord.Member, role: discord.Role):
     return discord.Embed(
         description=f"Added role {role.mention} to {member.mention}",

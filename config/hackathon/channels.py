@@ -4,20 +4,19 @@ from utils.dataclasses import Channel, ChannelCategory
 WELCOME = Channel(
     name="🎉welcome👋",
     overwrites={
-        roles.EVERYONE: permissions.overwrites.VIEW
-        | permissions.overwrites.READ_ONLY
+        roles.EVERYONE: permissions.overwrites.VIEW | permissions.overwrites.READ_ONLY
     },
 )
 
 RULES = Channel(
     name="📜rules⚖️",
     overwrites={
-        roles.EVERYONE: permissions.overwrites.VIEW
-        | permissions.overwrites.READ_ONLY
+        roles.EVERYONE: permissions.overwrites.VIEW | permissions.overwrites.READ_ONLY
     },
 )
 
 SYS_LOGS = Channel(name="🖥️sys-logs⚙️")
+MOD_LOGS = Channel(name="🛡️mod-logs🔨")
 GATEWAY_LOGS = Channel(name="🚪gateway-logs🔑")
 MEMBER_LOGS = Channel(name="👥member-logs📋")
 MESSAGE_LOGS = Channel(name="💬message-logs📝")
@@ -39,15 +38,11 @@ CHANNELS = [
             Channel(name="💬board-chat🧠"),
             Channel(
                 name="🤝sponsor-chat💼",
-                overwrites={
-                    hackathon.roles.SPONSOR: permissions.overwrites.VIEW
-                },
+                overwrites={hackathon.roles.SPONSOR: permissions.overwrites.VIEW},
             ),
             Channel(
                 name="🧑‍🏫mentor-chat💡",
-                overwrites={
-                    hackathon.roles.MENTOR: permissions.overwrites.VIEW
-                },
+                overwrites={hackathon.roles.MENTOR: permissions.overwrites.VIEW},
             ),
         ],
     ),
@@ -111,7 +106,7 @@ CHANNELS = [
         channels=[
             Channel(name="💬commands🛠️"),
             SYS_LOGS,
-            Channel(name="🛡️mod-logs🔨"),
+            MOD_LOGS,
             GATEWAY_LOGS,
             MEMBER_LOGS,
             MESSAGE_LOGS,

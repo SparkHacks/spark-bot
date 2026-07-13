@@ -18,7 +18,9 @@ class RoleCommands(commands.Cog):
         default_member_permissions=discord.Permissions(manage_roles=True),
     )
 
-    @role.command(name="add", description="Add a role to a member")
+    @role.command(name="add", description="Add a member to a role")
+    @discord.option("member", description="Member to role")
+    @discord.option("role", description="Role to add")
     async def add(
         self,
         ctx: discord.ApplicationContext,
@@ -40,7 +42,9 @@ class RoleCommands(commands.Cog):
             f"Role {role.name} added to {member} by {ctx.author} in {ctx.guild.name}"
         )
 
-    @role.command(name="remove", description="Remove a role from a member")
+    @role.command(name="remove", description="Remove a member from a role")
+    @discord.option("member", description="Member to role")
+    @discord.option("role", description="Role to remove")
     async def remove(
         self,
         ctx: discord.ApplicationContext,

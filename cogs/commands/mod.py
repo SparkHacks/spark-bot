@@ -17,11 +17,17 @@ class ModCommands(commands.Cog):
 
     @discord.slash_command(name="ban", description="Ban a member")
     @discord.default_permissions(ban_members=True)
+    @discord.option("member", description="Member to ban")
+    @discord.option("reason", description="Reason for the ban")
+    @discord.option(
+        "preserve_messages", description="Whether to preserve member messages or not"
+    )
     async def ban(
         self,
         ctx: discord.ApplicationContext,
         member: discord.Member,
         reason: str = None,
+        preserve_messages: bool = True,
     ):
         await ctx.defer(ephemeral=True)
 
@@ -29,7 +35,9 @@ class ModCommands(commands.Cog):
             await ctx.edit(embed=embeds.commands.ROLE_FORBIDDEN)
             return
 
-        await member.ban(reason=reason)
+        await member.ban(
+            reason=reason, delete_message_seconds=0 if preserve_messages else 604800
+        )
 
         await get_logs_channel(ctx.guild, LogsType.MOD).send(
             embed=embeds.events.MEMBER_BANNED(member, ctx.author, reason)
@@ -37,8 +45,10 @@ class ModCommands(commands.Cog):
         await ctx.edit(embed=embeds.commands.MOD_BAN(member))
         logger.info(f"{member} was banned from {ctx.guild.name} by {ctx.author}")
 
-    @discord.slash_command(name="unban", description="Unban a user by ID")
+    @discord.slash_command(name="unban", description="Unban a member")
     @discord.default_permissions(ban_members=True)
+    @discord.option("user_id", description="User ID to unban")
+    @discord.option("reason", description="Reason for the unban")
     async def unban(
         self,
         ctx: discord.ApplicationContext,
@@ -68,6 +78,8 @@ class ModCommands(commands.Cog):
 
     @discord.slash_command(name="kick", description="Kick a member")
     @discord.default_permissions(kick_members=True)
+    @discord.option("member", description="Member to kick")
+    @discord.option("reason", description="Reason for the kick")
     async def kick(
         self,
         ctx: discord.ApplicationContext,
@@ -88,8 +100,9 @@ class ModCommands(commands.Cog):
         await ctx.edit(embed=embeds.commands.MOD_KICK(member))
         logger.info(f"{member} was kicked from {ctx.guild.name} by {ctx.author}")
 
-    @discord.slash_command(name="mute", description="Timeout a member")
+    @discord.slash_command(name="mute", description="Mute a member")
     @discord.default_permissions(moderate_members=True)
+    @discord.option("member", description="Member to mute")
     @discord.option(
         "duration",
         int,
@@ -103,6 +116,7 @@ class ModCommands(commands.Cog):
             discord.OptionChoice("1 week", 604800),
         ],
     )
+    @discord.option("reason", description="Reason for the mute")
     async def mute(
         self,
         ctx: discord.ApplicationContext,
@@ -128,8 +142,10 @@ class ModCommands(commands.Cog):
             f"{member} was muted in {ctx.guild.name} by {ctx.author} for {duration}s"
         )
 
-    @discord.slash_command(name="unmute", description="Remove timeout from a member")
+    @discord.slash_command(name="unmute", description="Unmute a member")
     @discord.default_permissions(moderate_members=True)
+    @discord.option("member", description="Member to unmute")
+    @discord.option("reason", description="Reason for the unmute")
     async def unmute(
         self,
         ctx: discord.ApplicationContext,

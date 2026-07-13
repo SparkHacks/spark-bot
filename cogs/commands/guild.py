@@ -121,9 +121,10 @@ async def setup_guild(ctx: discord.ApplicationContext):
     )
 
     if rules_channel:
-        await discord.utils.get(ctx.guild.channels, name=rules_channel.name).send(
-            embed=embeds.rules.RULES
-        )
+        rules_msg = await discord.utils.get(
+            ctx.guild.channels, name=rules_channel.name
+        ).send(embed=embeds.rules.RULES)
+        await rules_msg.add_reaction("✅")
 
     await discord.utils.get(ctx.guild.channels, name=logs_channel.name).send(
         embed=embeds.commands.SETUP_SUCCESS

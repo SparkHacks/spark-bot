@@ -10,6 +10,13 @@ SPONSOR = Role(
     hoist=True,
 )
 
+JUDGE = Role(
+    name="Judge",
+    permissions=permissions.BASE,
+    color=colors.JUDGE,
+    hoist=True,
+)
+
 MENTOR = Role(
     name="Mentor",
     permissions=permissions.BASE,
@@ -29,12 +36,7 @@ ROLES = [
     roles.BOARD,
     roles.BOTDEV,
     SPONSOR,
-    Role(
-        name="Judge",
-        permissions=permissions.BASE,
-        color=colors.JUDGE,
-        hoist=True,
-    ),
+    JUDGE,
     MENTOR,
     HACKER,
     roles.BOTS,

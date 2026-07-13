@@ -190,6 +190,63 @@ class Events(commands.Cog):
             f"Message by {after.author} edited in {after.channel} channel in {after.guild.name}"
         )
 
+    @commands.Cog.listener()
+    async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
+        if str(payload.emoji) != "✅" or not payload.guild_id:
+            return
+
+        guild = self.bot.get_guild(payload.guild_id)
+        if get_guild_type(guild.name) != GuildType.HACKATHON:
+            return
+
+        channel = guild.get_channel(payload.channel_id)
+        if not channel or channel.name != hackathon.channels.RULES.name:
+            return
+
+        member = guild.get_member(payload.user_id)
+        if not member or member.bot:
+            return
+
+        if {role.name for role in member.roles} & {
+            roles.BOARD.name,
+            roles.BOTDEV.name,
+            hackathon.roles.SPONSOR.name,
+            hackathon.roles.JUDGE.name,
+            hackathon.roles.MENTOR.name,
+        }:
+            return
+
+        await member.add_roles(
+            discord.utils.get(guild.roles, name=hackathon.roles.HACKER.name)
+        )
+        logger.info(f"{member} accepted rules and received Hacker role in {guild.name}")
+
+    @commands.Cog.listener()
+    async def on_raw_reaction_remove(self, payload: discord.RawReactionActionEvent):
+        if str(payload.emoji) != "✅" or not payload.guild_id:
+            return
+
+        guild = self.bot.get_guild(payload.guild_id)
+        if get_guild_type(guild.name) != GuildType.HACKATHON:
+            return
+
+        channel = guild.get_channel(payload.channel_id)
+        if not channel or channel.name != hackathon.channels.RULES.name:
+            return
+
+        member = guild.get_member(payload.user_id)
+        if not member or member.bot:
+            return
+
+        hacker_role = discord.utils.get(guild.roles, name=hackathon.roles.HACKER.name)
+        if not hacker_role or hacker_role not in member.roles:
+            return
+
+        await member.remove_roles(hacker_role)
+        logger.info(
+            f"{member} removed rules reaction and lost Hacker role in {guild.name}"
+        )
+
 
 def setup(bot: commands.Bot):
     bot.add_cog(Events(bot))

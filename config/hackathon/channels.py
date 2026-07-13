@@ -71,6 +71,7 @@ CHANNELS = [
         overwrites={
             hackathon.roles.HACKER: permissions.overwrites.VIEW,
             hackathon.roles.SPONSOR: permissions.overwrites.VIEW,
+            hackathon.roles.JUDGE: permissions.overwrites.VIEW,
             hackathon.roles.MENTOR: permissions.overwrites.VIEW,
         },
     ),

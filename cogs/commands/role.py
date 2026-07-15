@@ -39,7 +39,7 @@ class RoleCommands(commands.Cog):
         await member.add_roles(role)
         await ctx.edit(embed=embeds.commands.ROLE_ADD(member, role))
         logger.info(
-            f"Role {role.name} added to {member} by {ctx.author} in {ctx.guild.name}"
+            f"{role.name} role added to {member} by {ctx.author} in {ctx.guild.name} server"
         )
 
     @role.command(name="remove", description="Remove a member from a role")
@@ -63,7 +63,7 @@ class RoleCommands(commands.Cog):
         await member.remove_roles(role)
         await ctx.edit(embed=embeds.commands.ROLE_REMOVE(member, role))
         logger.info(
-            f"Role {role.name} removed from {member} by {ctx.author} in {ctx.guild.name}"
+            f"{role.name} role removed from {member} by {ctx.author} in {ctx.guild.name} server"
         )
 
 

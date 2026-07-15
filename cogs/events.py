@@ -27,35 +27,36 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
-        if get_guild_type(member.guild.name) == GuildType.BOARD:
-            await member.add_roles(
-                discord.utils.get(member.guild.roles, name=roles.BOARD.name)
-            )
-        else:
-            await member.add_roles(
-                discord.utils.get(
-                    member.guild.roles,
-                    name=hackathon.roles.categories.PERSONAL.name,
-                ),
-                discord.utils.get(
-                    member.guild.roles,
-                    name=hackathon.roles.categories.EXPERIENCE.name,
-                ),
-                discord.utils.get(
-                    member.guild.roles,
-                    name=hackathon.roles.categories.TEAM_STATUS.name,
-                ),
-            )
+        if not member.bot:
+            if get_guild_type(member.guild.name) == GuildType.BOARD:
+                await member.add_roles(
+                    discord.utils.get(member.guild.roles, name=roles.BOARD.name)
+                )
+            else:
+                await member.add_roles(
+                    discord.utils.get(
+                        member.guild.roles,
+                        name=hackathon.roles.categories.PERSONAL.name,
+                    ),
+                    discord.utils.get(
+                        member.guild.roles,
+                        name=hackathon.roles.categories.EXPERIENCE.name,
+                    ),
+                    discord.utils.get(
+                        member.guild.roles,
+                        name=hackathon.roles.categories.TEAM_STATUS.name,
+                    ),
+                )
 
-        await member.guild.system_channel.send(
-            embed=embeds.events.WELCOME(member),
-            allowed_mentions=discord.AllowedMentions(users=True),
-        )
+            await member.guild.system_channel.send(
+                embed=embeds.events.WELCOME(member),
+                allowed_mentions=discord.AllowedMentions(users=True),
+            )
 
         await get_logs_channel(member.guild, LogsType.GATEWAY).send(
             embed=embeds.events.MEMBER_JOINED(member)
         )
-        logger.info(f"{member} joined {member.guild.name}")
+        logger.info(f"{member} joined {member.guild.name} server")
 
     @commands.Cog.listener()
     async def on_member_remove(self, member: discord.Member):
@@ -73,13 +74,13 @@ class Events(commands.Cog):
                 )
             )
             logger.info(
-                f"{member} was kicked from {member.guild.name} by {kick_entry.user}"
+                f"{member} was kicked from {member.guild.name} server by {kick_entry.user}"
             )
         elif not kick_entry and not ban_entry:
             await get_logs_channel(member.guild, LogsType.GATEWAY).send(
                 embed=embeds.events.MEMBER_LEFT(member)
             )
-            logger.info(f"{member} left {member.guild.name}")
+            logger.info(f"{member} left {member.guild.name} server")
 
     @commands.Cog.listener()
     async def on_member_ban(self, guild: discord.Guild, user: discord.User):
@@ -95,7 +96,7 @@ class Events(commands.Cog):
         await get_logs_channel(guild, LogsType.MOD).send(
             embed=embeds.events.MEMBER_BANNED(user, moderator, reason)
         )
-        logger.info(f"{user} was banned from {guild.name} by {moderator}")
+        logger.info(f"{user} was banned from {guild.name} server by {moderator}")
 
     @commands.Cog.listener()
     async def on_member_unban(self, guild: discord.Guild, user: discord.User):
@@ -111,10 +112,13 @@ class Events(commands.Cog):
         await get_logs_channel(guild, LogsType.MOD).send(
             embed=embeds.events.MEMBER_UNBANNED(user, moderator, reason)
         )
-        logger.info(f"{user} was unbanned from {guild.name} by {moderator}")
+        logger.info(f"{user} was unbanned from {guild.name} server by {moderator}")
 
     @commands.Cog.listener()
     async def on_member_update(self, before: discord.Member, after: discord.Member):
+        if after.bot:
+            return
+
         member_logs_channel = get_logs_channel(before.guild, LogsType.MEMBER)
         mod_logs_channel = get_logs_channel(before.guild, LogsType.MOD)
 
@@ -126,7 +130,7 @@ class Events(commands.Cog):
                 embed=embeds.events.NICKNAME_CHANGED(after, before_nick, after_nick)
             )
             logger.info(
-                f"{after} changed nickname from {before_nick} to {after_nick} in {before.guild.name}"
+                f"{after} changed nickname from {before_nick} to {after_nick} in {before.guild.name} server"
             )
 
         if before.communication_disabled_until != after.communication_disabled_until:
@@ -144,14 +148,14 @@ class Events(commands.Cog):
                         embed=embeds.events.MEMBER_MUTED(after, moderator, reason)
                     )
                     logger.info(
-                        f"{after} was muted in {before.guild.name} by {moderator}"
+                        f"{after} was muted in {before.guild.name} server by {moderator}"
                     )
                 else:
                     await mod_logs_channel.send(
                         embed=embeds.events.MEMBER_UNMUTED(after, moderator, reason)
                     )
                     logger.info(
-                        f"{after} was unmuted in {before.guild.name} by {moderator}"
+                        f"{after} was unmuted in {before.guild.name} server by {moderator}"
                     )
 
         added = set(after.roles) - set(before.roles)
@@ -159,12 +163,16 @@ class Events(commands.Cog):
 
         for role in added:
             await member_logs_channel.send(embed=embeds.events.ROLE_GIVEN(after, role))
-            logger.info(f"Role {role.name} given to {after} in {before.guild.name}")
+            logger.info(
+                f"{role.name} role given to {after} in {before.guild.name} server"
+            )
         for role in removed:
             await member_logs_channel.send(
                 embed=embeds.events.ROLE_REMOVED(after, role)
             )
-            logger.info(f"Role {role.name} removed from {after} in {before.guild.name}")
+            logger.info(
+                f"{role.name} role removed from {after} in {before.guild.name} server"
+            )
 
     @commands.Cog.listener()
     async def on_message_delete(self, message: discord.Message):
@@ -175,7 +183,7 @@ class Events(commands.Cog):
             embed=embeds.events.MESSAGE_DELETED(message)
         )
         logger.info(
-            f"Message by {message.author} deleted in {message.channel} channel in {message.guild.name}"
+            f"Message by {message.author} deleted in #{message.channel.name} in {message.guild.name} server"
         )
 
     @commands.Cog.listener()
@@ -187,7 +195,7 @@ class Events(commands.Cog):
             embed=embeds.events.MESSAGE_EDITED(before, after)
         )
         logger.info(
-            f"Message by {after.author} edited in {after.channel} channel in {after.guild.name}"
+            f"Message by {after.author} edited in #{after.channel.name} in {after.guild.name} server"
         )
 
     @commands.Cog.listener()
@@ -219,7 +227,9 @@ class Events(commands.Cog):
         await member.add_roles(
             discord.utils.get(guild.roles, name=hackathon.roles.HACKER.name)
         )
-        logger.info(f"{member} accepted rules and received Hacker role in {guild.name}")
+        logger.info(
+            f"{member} accepted rules and received Hacker role in {guild.name} server"
+        )
 
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload: discord.RawReactionActionEvent):
@@ -244,7 +254,7 @@ class Events(commands.Cog):
 
         await member.remove_roles(hacker_role)
         logger.info(
-            f"{member} removed rules reaction and lost Hacker role in {guild.name}"
+            f"{member} revoked rules acceptance and lost Hacker role in {guild.name} server"
         )
 
 

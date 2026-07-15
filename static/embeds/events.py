@@ -4,7 +4,7 @@ import discord
 
 from static import colors
 
-WELCOME_TEXTS = [
+__WELCOME_TEXTS = [
     "{mention} just landed",
     "{mention} just showed up",
     "{mention} joined the party",
@@ -23,7 +23,7 @@ def WELCOME(member: discord.Member):
     return discord.Embed(
         title=f"Welcome to {member.guild.name}!",
         description=(
-            f"{random.choice(WELCOME_TEXTS).format(mention=member.mention)}! "
+            f"{random.choice(__WELCOME_TEXTS).format(mention=member.mention)}! "
             f"Head over to {introduction_channel.mention} and say hi!"
         ),
         color=colors.BOT,
@@ -103,7 +103,7 @@ def MEMBER_LEFT(member: discord.Member):
 def NICKNAME_CHANGED(member: discord.Member, before_nick: str, after_nick: str):
     return (
         discord.Embed(
-            description=f"{member.mention} nickname changed",
+            description=f"**{member.mention} nickname changed**",
             color=colors.BOT,
             timestamp=discord.utils.utcnow(),
         )
@@ -117,7 +117,7 @@ def NICKNAME_CHANGED(member: discord.Member, before_nick: str, after_nick: str):
 def ROLE_GIVEN(member: discord.Member, role: discord.Role):
     return (
         discord.Embed(
-            description=f"{member.mention} was given the {role.mention} role",
+            description=f"**{member.mention} was given {role.mention} role**",
             color=discord.Color.green(),
             timestamp=discord.utils.utcnow(),
         )
@@ -129,7 +129,7 @@ def ROLE_GIVEN(member: discord.Member, role: discord.Role):
 def ROLE_REMOVED(member: discord.Member, role: discord.Role):
     return (
         discord.Embed(
-            description=f"{member.mention} was removed from the {role.mention} role",
+            description=f"**{member.mention} was removed from {role.mention} role**",
             color=discord.Color.red(),
             timestamp=discord.utils.utcnow(),
         )
@@ -140,12 +140,20 @@ def ROLE_REMOVED(member: discord.Member, role: discord.Role):
 
 # Message events
 def MESSAGE_DELETED(message: discord.Message):
-    return (
+    images = [
+        attachment
+        for attachment in message.attachments
+        if attachment.content_type and attachment.content_type.startswith("image/")
+    ]
+
+    if message.content:
+        description = f"**Message deleted by {message.author.mention} in {message.channel.mention}**\n{message.content}"
+    else:
+        description = f"**{"Image" if images else "File"} deleted by {message.author.mention} in {message.channel.mention}**"
+
+    embed = (
         discord.Embed(
-            description=(
-                f"Message sent by {message.author.mention} deleted in {message.channel.mention}\n"
-                f"{message.content or '*No text content*'}"
-            ),
+            description=description,
             color=discord.Color.red(),
             timestamp=discord.utils.utcnow(),
         )
@@ -156,11 +164,16 @@ def MESSAGE_DELETED(message: discord.Message):
         .set_footer(text=f"User ID: {message.author.id} • Message ID: {message.id}")
     )
 
+    if images:
+        embed.set_image(url=images[0].url)
+
+    return embed
+
 
 def MESSAGE_EDITED(before: discord.Message, after: discord.Message):
     return (
         discord.Embed(
-            description=f"[Message]({after.jump_url} edited in {after.channel.mention})",
+            description=f"**[Message]({after.jump_url}) edited in {after.channel.mention}**",
             color=colors.BOT,
             timestamp=discord.utils.utcnow(),
         )

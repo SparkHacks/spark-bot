@@ -43,7 +43,7 @@ class ModCommands(commands.Cog):
             embed=embeds.events.MEMBER_BANNED(member, ctx.author, reason)
         )
         await ctx.edit(embed=embeds.commands.MOD_BAN(member))
-        logger.info(f"{member} was banned from {ctx.guild.name} by {ctx.author}")
+        logger.info(f"{member} was banned from {ctx.guild.name} server by {ctx.author}")
 
     @discord.slash_command(name="unban", description="Unban a member")
     @discord.default_permissions(ban_members=True)
@@ -74,7 +74,7 @@ class ModCommands(commands.Cog):
             embed=embeds.events.MEMBER_UNBANNED(user, ctx.author, reason)
         )
         await ctx.edit(embed=embeds.commands.MOD_UNBAN(user))
-        logger.info(f"{user} was unbanned from {ctx.guild.name} by {ctx.author}")
+        logger.info(f"{user} was unbanned from {ctx.guild.name} server by {ctx.author}")
 
     @discord.slash_command(name="kick", description="Kick a member")
     @discord.default_permissions(kick_members=True)
@@ -98,7 +98,7 @@ class ModCommands(commands.Cog):
             embed=embeds.events.MEMBER_KICKED(member, ctx.author, reason)
         )
         await ctx.edit(embed=embeds.commands.MOD_KICK(member))
-        logger.info(f"{member} was kicked from {ctx.guild.name} by {ctx.author}")
+        logger.info(f"{member} was kicked from {ctx.guild.name} server by {ctx.author}")
 
     @discord.slash_command(name="mute", description="Mute a member")
     @discord.default_permissions(moderate_members=True)
@@ -139,7 +139,7 @@ class ModCommands(commands.Cog):
         )
         await ctx.edit(embed=embeds.commands.MOD_MUTE(member, duration))
         logger.info(
-            f"{member} was muted in {ctx.guild.name} by {ctx.author} for {duration}s"
+            f"{member} was muted in {ctx.guild.name} server by {ctx.author} for {duration}s"
         )
 
     @discord.slash_command(name="unmute", description="Unmute a member")
@@ -160,7 +160,7 @@ class ModCommands(commands.Cog):
             embed=embeds.events.MEMBER_UNMUTED(member, ctx.author, reason)
         )
         await ctx.edit(embed=embeds.commands.MOD_UNMUTE(member))
-        logger.info(f"{member} was unmuted in {ctx.guild.name} by {ctx.author}")
+        logger.info(f"{member} was unmuted in {ctx.guild.name} server by {ctx.author}")
 
 
 def setup(bot: commands.Bot):

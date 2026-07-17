@@ -52,6 +52,9 @@ class GatewayEvents(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_remove(self, member: discord.Member):
+        if member.id == self.bot.user.id:
+            return
+
         kick_entry = await get_audit_log_entry(
             member.guild, discord.AuditLogAction.kick, member.id
         )

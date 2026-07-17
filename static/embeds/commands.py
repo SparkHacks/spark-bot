@@ -1,21 +1,5 @@
 import discord
 
-# Guild commands
-SETUP_CONFIRM = discord.Embed(
-    description="Server already has roles or channels. Wipe everything and set up from scratch?",
-    color=discord.Color.orange(),
-)
-
-SETUP_ABORT = discord.Embed(
-    description="Server setup was aborted.",
-    color=discord.Color.dark_gray(),
-)
-
-SETUP_SUCCESS = discord.Embed(
-    description="Server has been set up successfully!",
-    color=discord.Color.green(),
-)
-
 
 # Mod commands
 def MOD_BAN(member: discord.Member):
@@ -39,7 +23,7 @@ def MOD_KICK(member: discord.Member):
     )
 
 
-__DURATION_LABELS = {
+_DURATION_LABELS = {
     60: "60 seconds",
     300: "5 minutes",
     600: "10 minutes",
@@ -51,7 +35,7 @@ __DURATION_LABELS = {
 
 def MOD_MUTE(member: discord.Member, duration: int):
     return discord.Embed(
-        description=f"{member.mention} has been muted for {__DURATION_LABELS[duration]}.",
+        description=f"{member.mention} has been muted for {_DURATION_LABELS[duration]}.",
         color=discord.Color.red(),
     )
 

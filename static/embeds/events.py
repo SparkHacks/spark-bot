@@ -4,7 +4,8 @@ import discord
 
 from static import colors
 
-__WELCOME_TEXTS = [
+# Bot events
+_WELCOME_TEXTS = [
     "{mention} just landed",
     "{mention} just showed up",
     "{mention} joined the party",
@@ -23,49 +24,11 @@ def WELCOME(member: discord.Member):
     return discord.Embed(
         title=f"Welcome to {member.guild.name}!",
         description=(
-            f"{random.choice(__WELCOME_TEXTS).format(mention=member.mention)}! "
+            f"{random.choice(_WELCOME_TEXTS).format(mention=member.mention)}! "
             f"Head over to {introduction_channel.mention} and say hi!"
         ),
         color=colors.BOT,
     )
-
-
-# Mod events
-def __MOD_ACTION(
-    action: str,
-    color: discord.Color,
-    user: discord.User | discord.Member,
-    moderator: discord.User | discord.Member,
-    reason: str | None,
-):
-    return (
-        discord.Embed(color=color, timestamp=discord.utils.utcnow())
-        .set_author(name=f"{action} | {user.name}", icon_url=user.display_avatar.url)
-        .add_field(name="User", value=user.mention, inline=True)
-        .add_field(name="Moderator", value=moderator.mention, inline=True)
-        .add_field(name="Reason", value=reason or "No reason given.", inline=True)
-        .set_footer(text=f"ID: {user.id}")
-    )
-
-
-def MEMBER_BANNED(user, moderator, reason=None):
-    return __MOD_ACTION("Ban", discord.Color.red(), user, moderator, reason)
-
-
-def MEMBER_UNBANNED(user, moderator, reason=None):
-    return __MOD_ACTION("Unban", discord.Color.green(), user, moderator, reason)
-
-
-def MEMBER_KICKED(user, moderator, reason=None):
-    return __MOD_ACTION("Kick", discord.Color.red(), user, moderator, reason)
-
-
-def MEMBER_MUTED(user, moderator, reason=None):
-    return __MOD_ACTION("Mute", discord.Color.red(), user, moderator, reason)
-
-
-def MEMBER_UNMUTED(user, moderator, reason=None):
-    return __MOD_ACTION("Unmute", discord.Color.green(), user, moderator, reason)
 
 
 # Gateway events
@@ -99,7 +62,51 @@ def MEMBER_LEFT(member: discord.Member):
     )
 
 
+# Guild events
+SETUP_SUCCESS = discord.Embed(
+    description="Server has been set up successfully!",
+    color=discord.Color.green(),
+)
+
+
 # Member events
+def _MOD_ACTION(
+    action: str,
+    color: discord.Color,
+    user: discord.User | discord.Member,
+    moderator: discord.User | discord.Member,
+    reason: str | None,
+):
+    return (
+        discord.Embed(color=color, timestamp=discord.utils.utcnow())
+        .set_author(name=f"{action} | {user.name}", icon_url=user.display_avatar.url)
+        .add_field(name="User", value=user.mention, inline=True)
+        .add_field(name="Moderator", value=moderator.mention, inline=True)
+        .add_field(name="Reason", value=reason or "No reason given.", inline=True)
+        .set_footer(text=f"ID: {user.id}")
+    )
+
+
+def MEMBER_BANNED(user, moderator, reason=None):
+    return _MOD_ACTION("Ban", discord.Color.red(), user, moderator, reason)
+
+
+def MEMBER_UNBANNED(user, moderator, reason=None):
+    return _MOD_ACTION("Unban", discord.Color.green(), user, moderator, reason)
+
+
+def MEMBER_KICKED(user, moderator, reason=None):
+    return _MOD_ACTION("Kick", discord.Color.red(), user, moderator, reason)
+
+
+def MEMBER_MUTED(user, moderator, reason=None):
+    return _MOD_ACTION("Mute", discord.Color.red(), user, moderator, reason)
+
+
+def MEMBER_UNMUTED(user, moderator, reason=None):
+    return _MOD_ACTION("Unmute", discord.Color.green(), user, moderator, reason)
+
+
 def NICKNAME_CHANGED(member: discord.Member, before_nick: str, after_nick: str):
     return (
         discord.Embed(

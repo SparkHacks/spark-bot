@@ -27,7 +27,7 @@ class RoleCommands(commands.Cog):
         member: discord.Member,
         role: discord.Role,
     ):
-        await ctx.defer()
+        await ctx.defer(ephemeral="commands" not in ctx.channel.name)
 
         if ctx.guild.me.top_role <= role:
             await ctx.edit(embed=embeds.commands.ROLE_FORBIDDEN)
@@ -51,7 +51,7 @@ class RoleCommands(commands.Cog):
         member: discord.Member,
         role: discord.Role,
     ):
-        await ctx.defer()
+        await ctx.defer(ephemeral="commands" not in ctx.channel.name)
 
         if ctx.guild.me.top_role <= role:
             await ctx.edit(embed=embeds.commands.ROLE_FORBIDDEN)

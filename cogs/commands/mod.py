@@ -29,7 +29,7 @@ class ModCommands(commands.Cog):
         reason: str = None,
         preserve_messages: bool = True,
     ):
-        await ctx.defer(ephemeral=True)
+        await ctx.defer(ephemeral="commands" not in ctx.channel.name)
 
         if ctx.guild.me.top_role <= member.top_role:
             await ctx.edit(embed=embeds.commands.ROLE_FORBIDDEN)
@@ -55,7 +55,7 @@ class ModCommands(commands.Cog):
         user_id: str,
         reason: str = None,
     ):
-        await ctx.defer(ephemeral=True)
+        await ctx.defer(ephemeral="commands" not in ctx.channel.name)
 
         try:
             user = await ctx.bot.fetch_user(int(user_id))
@@ -86,7 +86,7 @@ class ModCommands(commands.Cog):
         member: discord.Member,
         reason: str = None,
     ):
-        await ctx.defer(ephemeral=True)
+        await ctx.defer(ephemeral="commands" not in ctx.channel.name)
 
         if ctx.guild.me.top_role <= member.top_role:
             await ctx.edit(embed=embeds.commands.ROLE_FORBIDDEN)
@@ -124,7 +124,7 @@ class ModCommands(commands.Cog):
         duration: int,
         reason: str = None,
     ):
-        await ctx.defer(ephemeral=True)
+        await ctx.defer(ephemeral="commands" not in ctx.channel.name)
 
         if ctx.guild.me.top_role <= member.top_role:
             await ctx.edit(embed=embeds.commands.ROLE_FORBIDDEN)
@@ -152,7 +152,7 @@ class ModCommands(commands.Cog):
         member: discord.Member,
         reason: str = None,
     ):
-        await ctx.defer(ephemeral=True)
+        await ctx.defer(ephemeral="commands" not in ctx.channel.name)
 
         await member.remove_timeout(reason=reason)
 

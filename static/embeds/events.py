@@ -63,10 +63,15 @@ def MEMBER_LEFT(member: discord.Member):
 
 
 # Guild events
-SETUP_SUCCESS = discord.Embed(
-    description="Server has been set up successfully!",
-    color=discord.Color.green(),
-)
+def SETUP_SUCCESS(guild: discord.Guild):
+    return discord.Embed(
+        description="**Server has been set up successfully!**",
+        color=discord.Color.green(),
+        timestamp=discord.utils.utcnow(),
+    ).set_author(
+        name=guild.name,
+        icon_url=guild.icon.url if guild.icon else None,
+    )
 
 
 # Member events
@@ -82,7 +87,7 @@ def _MOD_ACTION(
         .set_author(name=f"{action} | {user.name}", icon_url=user.display_avatar.url)
         .add_field(name="User", value=user.mention, inline=True)
         .add_field(name="Moderator", value=moderator.mention, inline=True)
-        .add_field(name="Reason", value=reason or "No reason given.", inline=True)
+        .add_field(name="Reason", value=reason or "No reason given", inline=True)
         .set_footer(text=f"ID: {user.id}")
     )
 

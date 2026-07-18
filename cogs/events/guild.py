@@ -142,7 +142,7 @@ class GuildEvents(commands.Cog):
             await rules_msg.add_reaction("✅")
 
         await discord.utils.get(guild.channels, name=logs_channel.name).send(
-            embed=embeds.events.SETUP_SUCCESS
+            embed=embeds.events.SETUP_SUCCESS(guild)
         )
 
         await guild.me.add_roles(discord.utils.get(guild.roles, name=roles.BOTS.name))

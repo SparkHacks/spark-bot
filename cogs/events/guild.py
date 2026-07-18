@@ -5,7 +5,7 @@ from discord.ext import commands
 
 from config import board, hackathon, permissions, roles
 from static import embeds
-from utils.dataclasses import Channel, ChannelCategory
+from utils.dataclasses import ChannelCategory, ForumChannel, TextChannel, VoiceChannel
 from utils.enums import GuildType
 from utils.guilds import get_guild_type
 
@@ -18,23 +18,21 @@ class GuildEvents(commands.Cog):
 
     @commands.Cog.listener()
     async def on_guild_join(self, guild: discord.Guild):
-        logger.info(f"{guild.name} server wipe started")
+        if guild.channels:
+            logger.info(f"{guild.name} server wipe started")
 
-        for channel in guild.channels:
-            try:
-                await channel.delete()
-            except Exception as e:
-                logger.error(f"Error deleting channel {channel.name}: {e}")
+            for channel in guild.channels:
+                try:
+                    await channel.delete()
+                except Exception as e:
+                    logger.error(f"Error deleting channel {channel.name}: {e}")
 
-        for role in guild.roles:
-            if role.name == "@everyone" or guild.me.top_role <= role:
-                continue
-            try:
-                await role.delete()
-            except Exception as e:
-                logger.error(f"Error deleting role {role.name}: {e}")
+            # Roles are not wiped since Discord blocks deleting roles above
+            # the bot's managed role, which can't be repositioned via the API.
+            # Assumes a fresh server with no prior roles but some channels
 
-        logger.info(f"{guild.name} server was wiped")
+            logger.info(f"{guild.name} server was wiped")
+
         logger.info(f"{guild.name} server setup started")
 
         if get_guild_type(guild.name) == GuildType.BOARD:
@@ -59,15 +57,14 @@ class GuildEvents(commands.Cog):
                 mentionable=role.mentionable,
             )
 
-        for item in channels:
+        for channel in channels:
             overwrites = {
                 guild.default_role: permissions.overwrites.DENY,
                 discord.utils.get(
                     guild.roles, name="Board"
                 ): permissions.overwrites.VIEW,
             }
-
-            for role, overwrite in item.overwrites.items():
+            for role, overwrite in channel.overwrites.items():
                 overwrites[
                     (
                         guild.default_role
@@ -76,31 +73,17 @@ class GuildEvents(commands.Cog):
                     )
                 ] = overwrite
 
-            if isinstance(item, Channel):
-                match item.type:
-                    case "text" | "announcement":
-                        await guild.create_text_channel(
-                            name=item.name, overwrites=overwrites
-                        )
-                    case "voice":
-                        await guild.create_voice_channel(
-                            name=item.name, overwrites=overwrites
-                        )
-                    case "forum":
-                        await guild.create_forum_channel(
-                            name=item.name, overwrites=overwrites
-                        )
-
-            elif isinstance(item, ChannelCategory):
+            if isinstance(channel, ChannelCategory):
                 category_channel = await guild.create_category(
-                    name=item.name, overwrites=overwrites
+                    name=channel.name, overwrites=overwrites
                 )
 
-                for channel in item.channels:
-                    channel_overwrites = {**overwrites}
+                items = []
 
-                    for role, overwrite in channel.overwrites.items():
-                        channel_overwrites[
+                for ch in channel.channels:
+                    ch_overwrites = {**overwrites}
+                    for role, overwrite in ch.overwrites.items():
+                        ch_overwrites[
                             (
                                 guild.default_role
                                 if role.name == "@everyone"
@@ -108,25 +91,37 @@ class GuildEvents(commands.Cog):
                             )
                         ] = overwrite
 
-                    match channel.type:
-                        case "text" | "announcement":
-                            await guild.create_text_channel(
-                                name=channel.name,
-                                category=category_channel,
-                                overwrites=channel_overwrites,
-                            )
-                        case "voice":
-                            await guild.create_voice_channel(
-                                name=channel.name,
-                                category=category_channel,
-                                overwrites=channel_overwrites,
-                            )
-                        case "forum":
-                            await guild.create_forum_channel(
-                                name=channel.name,
-                                category=category_channel,
-                                overwrites=channel_overwrites,
-                            )
+                    items.append((ch, ch_overwrites, category_channel))
+            else:
+                items = [(channel, overwrites, None)]
+
+            for ch, ch_overwrites, category in items:
+                if isinstance(ch, TextChannel):
+                    await guild.create_text_channel(
+                        name=ch.name,
+                        topic=ch.topic,
+                        category=category,
+                        overwrites=ch_overwrites,
+                    )
+                elif isinstance(ch, VoiceChannel):
+                    await guild.create_voice_channel(
+                        name=ch.name,
+                        category=category,
+                        overwrites=ch_overwrites,
+                    )
+                elif isinstance(ch, ForumChannel):
+                    forum_channel = await guild.create_forum_channel(
+                        name=ch.name,
+                        topic=ch.post_guidelines,
+                        category=category,
+                        overwrites=ch_overwrites,
+                    )
+                    await forum_channel.edit(
+                        available_tags=list(ch.tags),
+                        default_reaction_emoji=ch.default_reaction,
+                    )
+                    if ch.require_tag:
+                        await forum_channel.edit(require_tag=True)
 
         await guild.default_role.edit(permissions=permissions.EVERYONE)
         await guild.edit(
@@ -147,7 +142,7 @@ class GuildEvents(commands.Cog):
             await rules_msg.add_reaction("✅")
 
         await discord.utils.get(guild.channels, name=logs_channel.name).send(
-            embed=embeds.commands.SETUP_SUCCESS
+            embed=embeds.events.SETUP_SUCCESS
         )
 
         await guild.me.add_roles(discord.utils.get(guild.roles, name=roles.BOTS.name))

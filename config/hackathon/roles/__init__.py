@@ -1,7 +1,15 @@
-from config import permissions, roles
+from config import hackathon, permissions, roles
 from config.hackathon.roles import categories
 from static import colors
 from utils.dataclasses import Role
+
+BOARD = Role(
+    name="Board",
+    permissions=hackathon.permissions.BOARD,
+    color=colors.BOARD,
+    hoist=True,
+    mentionable=True,
+)
 
 SPONSOR = Role(
     name="Sponsor",
@@ -33,8 +41,7 @@ HACKER = Role(
 
 ROLES = [
     roles.DIRECTOR,
-    roles.BOARD,
-    roles.BOTDEV,
+    BOARD,
     SPONSOR,
     JUDGE,
     MENTOR,

@@ -3,7 +3,7 @@ import logging
 import discord
 from discord.ext import commands
 
-from config import hackathon, roles
+from config import hackathon
 from utils.enums import GuildType
 from utils.guilds import get_guild_type
 
@@ -32,8 +32,7 @@ class ReactionEvents(commands.Cog):
             return
 
         if {role.name for role in member.roles} & {
-            roles.BOARD.name,
-            roles.BOTDEV.name,
+            hackathon.roles.BOARD.name,
             hackathon.roles.SPONSOR.name,
             hackathon.roles.JUDGE.name,
             hackathon.roles.MENTOR.name,

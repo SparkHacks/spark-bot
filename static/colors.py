@@ -6,12 +6,11 @@ BOTS = discord.Color(0x607D8B)
 
 # Roles - Board
 DIRECTOR = discord.Color(0xD4AF37)
-LEAD = discord.Color(0xD4C26A)
+LEAD = discord.Color(0xFFE566)
 BOARD = discord.Color(0xD7D7D7)
-BOARD_ALUMNI = discord.Color(0x71797E)
+BOARD_ALUMNI = LEAD
 
 # Roles - Board Teams
-BOTDEV = BOT
 COMMUNICATIONS = discord.Color.magenta()
 DESIGN = discord.Color.teal()
 EXPERIENCE = discord.Color.dark_purple()
@@ -32,7 +31,7 @@ JUNIOR = discord.Color.blue()
 SENIOR = discord.Color.blurple()
 MASTER = discord.Color.purple()
 PHD = discord.Color.fuchsia()
-ALUMNI = discord.Color.gold()
+ALUMNI = discord.Color.dark_red()
 # Roles: Personal - Pronouns
 PRONOUNS = discord.Color.default()
 

@@ -3,7 +3,7 @@ import logging
 import discord
 from discord.ext import commands
 
-from config import hackathon, roles
+from config import board, hackathon
 from static import embeds
 from utils.channels import get_logs_channel
 from utils.enums import GuildType, LogsType
@@ -22,7 +22,7 @@ class GatewayEvents(commands.Cog):
         if not member.bot:
             if get_guild_type(member.guild.name) == GuildType.BOARD:
                 await member.add_roles(
-                    discord.utils.get(member.guild.roles, name=roles.BOARD.name)
+                    discord.utils.get(member.guild.roles, name=board.roles.BOARD.name)
                 )
             else:
                 await member.add_roles(

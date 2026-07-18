@@ -16,7 +16,7 @@ class Role:
 class RoleCategory:
     name: str
     permissions: discord.Permissions = discord.Permissions.none()
-    color: discord.Color = discord.Color(int("292B2F", 16))
+    color: discord.Color = discord.Color.default()
     hoist: bool = False
     mentionable: bool = False
 
@@ -29,18 +29,30 @@ class RoleCategory:
 
 
 @dataclass(frozen=True)
-class Channel:
+class TextChannel:
     name: str
-    type: str = "text"
-    overwrites: dict[Role, discord.PermissionOverwrite] = field(
-        default_factory=dict
-    )
+    topic: str | None = None
+    overwrites: dict[Role, discord.PermissionOverwrite] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class VoiceChannel:
+    name: str
+    overwrites: dict[Role, discord.PermissionOverwrite] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class ForumChannel:
+    name: str
+    post_guidelines: str | None = None
+    tags: list[discord.ForumTag] = field(default_factory=list)
+    require_tag: bool = False
+    default_reaction: str | None = None
+    overwrites: dict[Role, discord.PermissionOverwrite] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
 class ChannelCategory:
     name: str
-    channels: list[Channel]
-    overwrites: dict[Role, discord.PermissionOverwrite] = field(
-        default_factory=dict
-    )
+    channels: list[TextChannel | VoiceChannel | ForumChannel]
+    overwrites: dict[Role, discord.PermissionOverwrite] = field(default_factory=dict)

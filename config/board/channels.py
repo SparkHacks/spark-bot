@@ -1,23 +1,22 @@
 from config import board, permissions, roles
-from utils.dataclasses import Channel, ChannelCategory
+from utils.dataclasses import ChannelCategory, TextChannel, VoiceChannel
 
-WELCOME = Channel(
+WELCOME = TextChannel(
     name="🎉welcome👋",
-    overwrites={
-        roles.EVERYONE: permissions.overwrites.VIEW
-        | permissions.overwrites.READ_ONLY
-    },
+    overwrites={roles.EVERYONE: permissions.overwrites.READ_ONLY},
 )
 
-INTRODUCTIONS = Channel(
+INTRODUCTIONS = TextChannel(
     name="🗣introductions😎",
-    overwrites={
-        roles.EVERYONE: permissions.overwrites.VIEW
-        | permissions.overwrites.READ_WRITE
-    },
+    topic="Introduce yourself! Share your name, major, year, and hobbies/interests!",
+    overwrites={roles.EVERYONE: permissions.overwrites.READ_WRITE},
 )
 
-LOGS = Channel(name="📊logs📈")
+LOGS = TextChannel(
+    name="📊logs📈",
+    topic="Nothing to see here.",
+    overwrites={board.roles.BOARD: permissions.overwrites.READ_ONLY},
+)
 
 CHANNELS = [
     WELCOME,
@@ -25,64 +24,70 @@ CHANNELS = [
     ChannelCategory(
         name="🗞 Hub 📰",
         channels=[
-            Channel(
+            TextChannel(
                 name="📢announcements🚨",
-                type="announcement",
-                overwrites={roles.BOARD: permissions.overwrites.THREADS_ONLY},
+                topic="Never mute this one. Seriously.",
+                overwrites={board.roles.BOARD: permissions.overwrites.THREADS_ONLY},
             ),
-            Channel(name="💬general💼"),
-            Channel(
-                name="🗳️polls📊",
-                overwrites={roles.BOARD: permissions.overwrites.POLLS_ONLY},
-            ),
-            Channel(name="💡suggestions📝"),
-            Channel(name="📷photos🎞️"),
-            Channel(name="📚resources🤓"),
+            TextChannel(name="💬general💼", topic="The water cooler."),
+            TextChannel(name="🗳️polls📊", topic="Democracy time."),
+            TextChannel(name="💡suggestions📝", topic="Got an idea? Drop it here!"),
+            TextChannel(name="📷photos🎞️", topic="Share your SparkHacks memories!"),
+            TextChannel(name="📚resources🤓", topic="Temu Confluence."),
         ],
     ),
     ChannelCategory(
         name="🤪 Unserious 🎉",
         channels=[
-            Channel(name="💬yapping🗣️"),
-            Channel(name="😂memes🗿"),
+            TextChannel(name="💬yapping🗣️", topic="Off-topic. No work here."),
+            TextChannel(name="😂memes🗿", topic="The culture."),
         ],
     ),
     ChannelCategory(
         name="💪 Leads 👑",
         channels=[
-            Channel(name="💼discussion📈"),
-            Channel(name="💼leads-vc🎧", type="voice"),
+            TextChannel(name="💼discussion📈", topic="Leads-only safe space."),
+            VoiceChannel(name="💼leads-vc🎧"),
         ],
         overwrites={
-            roles.BOARD: permissions.overwrites.DENY,
+            board.roles.BOARD: permissions.overwrites.DENY,
             board.roles.LEAD: permissions.overwrites.VIEW,
         },
     ),
     ChannelCategory(
         name="💼 Teams 🤝",
         channels=[
-            Channel(name="💵communications📢"),
-            Channel(name="💃experience✨"),
-            Channel(name="📦logistics📈"),
-            Channel(name="📸outreach🎨"),
-            Channel(name="💻webdev👾"),
+            TextChannel(
+                name="💵communications📢", topic="Sliding into inboxes since 2022."
+            ),
+            TextChannel(
+                name="🎨design✨", topic="Making it pretty, so you don't have to."
+            ),
+            TextChannel(name="💃experience✨", topic="Vibes are our product."),
+            TextChannel(
+                name="📦logistics📈",
+                topic="If it's not in the spreadsheet, it doesn't exist.",
+            ),
+            TextChannel(name="📸media🎞️", topic="Capturing the chaos."),
+            TextChannel(name="💻webdev👾", topic="404: sleep not found."),
         ],
     ),
     ChannelCategory(
         name="🎤 Voice Chats 🎧",
         channels=[
-            Channel(name="🥱lounge😴", type="voice"),
-            Channel(name="💵communications-vc🎧", type="voice"),
-            Channel(name="💃experience-vc🎧", type="voice"),
-            Channel(name="📦logistics-vc🎧", type="voice"),
-            Channel(name="📸outreach-vc🎧", type="voice"),
-            Channel(name="💻webdev-vc🎧", type="voice"),
+            VoiceChannel(name="🥱lounge😴"),
+            VoiceChannel(name="💵communications-vc🎧"),
+            VoiceChannel(name="🎨design-vc✨"),
+            VoiceChannel(name="💃experience-vc🎧"),
+            VoiceChannel(name="📦logistics-vc🎧"),
+            VoiceChannel(name="📸media-vc🎞️"),
+            VoiceChannel(name="💻webdev-vc🎧"),
         ],
     ),
     ChannelCategory(
         name="🤖 SparkHacks Bot ⚙️",
         channels=[
-            Channel(name="💬commands🛠️"),
+            TextChannel(name="💬commands🛠️", topic="Bother the bot here."),
             LOGS,
         ],
     ),

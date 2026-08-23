@@ -1,5 +1,5 @@
 from config import board, permissions, roles
-from utils.dataclasses import ChannelCategory, TextChannel, VoiceChannel
+from util.dataclasses import ChannelCategory, TextChannel, VoiceChannel
 
 WELCOME = TextChannel(
     name="🎉welcome👋",

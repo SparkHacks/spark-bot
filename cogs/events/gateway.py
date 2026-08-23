@@ -5,10 +5,10 @@ from discord.ext import commands
 
 from config import board, hackathon
 from static import embeds
-from utils.channels import get_logs_channel
-from utils.enums import GuildType, LogsType
-from utils.events import get_audit_log_entry
-from utils.guilds import get_guild_type
+from util.channels import get_logs_channel
+from util.enums import GuildType, LogsType
+from util.events import get_audit_log_entry
+from util.guilds import get_guild_type
 
 logger = logging.getLogger(__name__)
 

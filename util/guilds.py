@@ -1,6 +1,6 @@
 import re
 
-from utils.enums import GuildType
+from util.enums import GuildType
 
 
 def get_guild_type(name: str) -> GuildType:

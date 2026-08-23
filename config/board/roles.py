@@ -1,6 +1,6 @@
 from config import board, roles
 from static import colors
-from utils.dataclasses import Role
+from util.dataclasses import Role
 
 LEAD = Role(name="Lead", color=colors.LEAD, hoist=True)
 

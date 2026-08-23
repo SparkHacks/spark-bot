@@ -1,7 +1,7 @@
 from config import hackathon, permissions, roles
 from config.hackathon.roles import categories
 from static import colors
-from utils.dataclasses import Role
+from util.dataclasses import Role
 
 BOARD = Role(
     name="Board",

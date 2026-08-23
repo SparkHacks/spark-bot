@@ -1,7 +1,7 @@
 import discord
 
 from config import hackathon, permissions, roles
-from utils.dataclasses import ChannelCategory, ForumChannel, TextChannel, VoiceChannel
+from util.dataclasses import ChannelCategory, ForumChannel, TextChannel, VoiceChannel
 
 WELCOME = TextChannel(
     name="🎉welcome👋",

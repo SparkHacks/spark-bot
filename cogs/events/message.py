@@ -4,8 +4,8 @@ import discord
 from discord.ext import commands
 
 from static import embeds
-from utils.channels import get_logs_channel
-from utils.enums import LogsType
+from util.channels import get_logs_channel
+from util.enums import LogsType
 
 logger = logging.getLogger(__name__)
 

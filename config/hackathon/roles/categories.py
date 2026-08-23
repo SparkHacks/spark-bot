@@ -1,4 +1,4 @@
-from utils.dataclasses import RoleCategory
+from util.dataclasses import RoleCategory
 
 PERSONAL = RoleCategory(name="Personal")
 EXPERIENCE = RoleCategory(name="Experience")

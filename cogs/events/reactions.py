@@ -4,8 +4,8 @@ import discord
 from discord.ext import commands
 
 from config import hackathon
-from utils.enums import GuildType
-from utils.guilds import get_guild_type
+from util.enums import GuildType
+from util.guilds import get_guild_type
 
 logger = logging.getLogger(__name__)
 

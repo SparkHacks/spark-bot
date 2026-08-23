@@ -5,9 +5,9 @@ from discord.ext import commands
 
 from config import board, hackathon, permissions, roles
 from static import embeds
-from utils.dataclasses import ChannelCategory, ForumChannel, TextChannel, VoiceChannel
-from utils.enums import GuildType
-from utils.guilds import get_guild_type
+from util.dataclasses import ChannelCategory, ForumChannel, TextChannel, VoiceChannel
+from util.enums import GuildType
+from util.guilds import get_guild_type
 
 logger = logging.getLogger(__name__)
 

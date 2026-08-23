@@ -1,8 +1,8 @@
 import discord
 
 from config import board, hackathon
-from utils.enums import GuildType, LogsType
-from utils.guilds import get_guild_type
+from util.enums import GuildType, LogsType
+from util.guilds import get_guild_type
 
 
 def get_logs_channel(guild: discord.Guild, logs_type: LogsType) -> discord.TextChannel:

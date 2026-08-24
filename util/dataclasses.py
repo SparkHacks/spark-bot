@@ -2,6 +2,8 @@ from dataclasses import dataclass, field
 
 import discord
 
+from static import colors
+
 
 @dataclass(frozen=True)
 class Role:
@@ -16,7 +18,7 @@ class Role:
 class RoleCategory:
     name: str
     permissions: discord.Permissions = discord.Permissions.none()
-    color: discord.Color = discord.Color.default()
+    color: discord.Color = colors.CATEGORIES
     hoist: bool = False
     mentionable: bool = False
 

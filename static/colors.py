@@ -11,9 +11,9 @@ BOARD = discord.Color(0xD7D7D7)
 BOARD_ALUMNI = LEAD
 
 # Roles - Board Teams
-COMMUNICATIONS = discord.Color.magenta()
+COMMUNICATIONS = discord.Color(0xFA64A5)
 DESIGN = discord.Color.teal()
-EXPERIENCE = discord.Color.dark_purple()
+EXPERIENCE = discord.Color(0xF60206)
 LOGISTICS = discord.Color.orange()
 MEDIA = discord.Color.blue()
 WEBDEV = discord.Color(0x9C00EB)
@@ -45,3 +45,6 @@ RETURNING_ATTENDEE = discord.Color.dark_blue()
 LOOKING_FOR_TEAM = discord.Color.red()
 LOOKING_FOR_MEMBERS = discord.Color.orange()
 TEAMED_UP = discord.Color.green()
+
+# Roles: Categories
+CATEGORIES = discord.Color(0x292B2F)
